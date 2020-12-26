@@ -1,21 +1,61 @@
 <template>
   <div class="header">
-    <div id="menu">
-      <div class="menuItem"><i class="fa fa-search" aria-hidden="true"></i> 搜索</div>
-      <div class="menuItem"><i class="fa fa-home" aria-hidden="true"></i> 首页</div>
-      <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"></i> 文章</div>
-      <div class="menuItem">工具</div>
-      <div class="menuItem">链接</div>
-      <div class="menuItem">留言板</div>
-      <div class="menuItem">关于</div>
+    <div id="menu" :class="{ move: dissipate, menumove: !dissipate}">
+      <div class="menuItem"><i class="fa fa-search" aria-hidden="true"> 搜索</i></div>
+      <div class="menuItem"><i style="font: size 1.2em;" class="fa fa-home" aria-hidden="true"> 首页</i></div>
+      <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"> 文章</i></div>
+      <div class="menuItem"><i class="fa fa-wrench" aria-hidden="true"> 工具</i></div>
+      <div class="menuItem"><i class="fa fa-link" aria-hidden="true"> 链接</i></div>
+      <div class="menuItem"><i class="fa fa-comments-o" aria-hidden="true"> 留言板</i> </div>
+      <div class="menuItem"><i class="fa fa-info" aria-hidden="true"> 关于</i></div>
     </div>
     <div class="cover">
       <span id="title" :class="{ move: dissipate}">欢迎来到我的博客</span>
-      <div id="saying">
+      <div id="saying" :class="{ move: dissipate}">
         <span>流光容易把人抛，红了樱桃，绿了芭蕉</span>
+      </div>
+      <div @click="dropdown" :class="{move: dissipate, down:!dissipate}">
+        <span>
+          <svg t="1608967625889" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5425" width="48" height="48"><path d="M217.428767 62.593887L279.922664 0.09999l232.177326 232.177327L744.277317 0.09999l62.493897 62.493897-294.671224 294.671224L217.428767 62.593887z" fill="#ffffff" p-id="5426"></path><path d="M217.428767 729.328776l62.493897-62.493897 232.177326 232.177327 232.177327-232.177327 62.493897 62.493897-294.671224 294.671224-294.671223-294.671224z" fill="#ffffff" p-id="5427"></path><path d="M217.428767 395.961332l62.493897-62.493897 232.177326 232.177326 232.177327-232.177326 62.493897 62.493897-294.671224 294.671223L217.428767 395.961332z" fill="#ffffff" p-id="5428"></path></svg>
+        </span>
       </div>
     </div>
     <div id="content">
+        <div class="blogs">
+          <div class="blog-item">
+            <div class="scale-pic">
+            </div>
+            <div class="article">
+              <div class="article-title">
+                <h2>Just like a dog,就像一条狗</h2>
+              </div>
+              <div class="article-attributes">
+                <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
+              </div>
+              <div class="article-content">
+                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+              </div>
+            </div>
+          </div>
+          <div class="blog-item">
+            <div class="scale-pic">
+            </div>
+            <div class="article">
+              <div class="article-title">
+                <h2>Just like a dog,就像一条狗</h2>
+              </div>
+              <div class="article-attributes">
+                <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
+              </div>
+              <div class="article-content">
+                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card"></div>
     </div>
   </div>
 </template>
@@ -25,16 +65,28 @@ export default {
   name: 'Index',
   data () {
     return {
-      dissipate: false
+      dissipate: false,
+      scrollTop: 0
     }
   },
   methods: {
-    handleScroll () {
-      this.dissipate = true
+    // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
+    handleScroll (event) {
+      this.scrollTop = event.target.scrollTop
+      if (this.scrollTop !== 0) {
+        this.dissipate = true
+      } else {
+        this.dissipate = false
+      }
+    },
+    // 点击向下图标，让滚动条向下滚动
+    dropdown () {
+      // 设置让滚动条缓慢移动对应位置
     }
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
+    this.$nextTick()
   },
   destoryed () {
     window.removeEventListener('scroll', this.handleScroll)
@@ -45,7 +97,7 @@ export default {
   .header {
     width: 100vw;
     height: 100vh;
-    background-image: url('~@/assets/love.jpg');
+    background-image: url('~@/assets/family.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
@@ -64,13 +116,18 @@ export default {
     flex-direction: row;
     justify-content: flex-end;
     align-items: center;
+    transition: all 0.5s linear;
   }
   .menuItem{
-    opacity: 0.8;
     margin-right: 30px;
-    color: #ffffff;
+    color: #d4cfcf;
+    /* opacity: 0.8; */
     font-size: 0.9em;
     cursor: pointer;
+  }
+  .menuItem :hover{
+    color: #ffffff;
+    transition: all 0.4s ease;
   }
   .cover{
     width:100%;
@@ -80,6 +137,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
   }
   #title{
     width: 8em;
@@ -101,6 +159,7 @@ export default {
     flex-direction: row;
     border-right: 2px solid transparent;
     justify-content: flex-start;
+    transition: all 0.5s linear;
   }
   #saying span{
     width: 17em;
@@ -112,6 +171,16 @@ export default {
   .move{
     opacity: 0;
   }
+  .menumove{
+    animation: show-then-hide 0.5s linear;
+  }
+  .down{
+    position: absolute;
+    bottom: 20px;
+    transform: scale(0.4);
+    animation: up-then-down 1s linear infinite;
+    cursor: pointer;
+  }
   @keyframes typing {
     from { width: 0em; }
     to { width: 17em; }
@@ -120,9 +189,125 @@ export default {
     from, to { box-shadow: 2px 0 0 0 transparent; }
     50% { box-shadow: 2px 0 0 0; }
   }
+  @keyframes show-then-hide{
+    from{
+      background-color: rgb(30, 30, 30);
+    }
+    to{
+      background-color: transparent;
+    }
+  }
+  @keyframes up-then-down {
+    0%{
+      bottom: 20px;
+      opacity: 1;
+    }
+    50%{
+      bottom: 10px;
+      opacity: 0.5;
+    }
+    100%{
+      bottom: 0px;
+      opacity: 0;
+    }
+  }
   #content{
     width: 100%;
-    height: 300px;
+    height: 600px;
+    background-image: url('~@/assets/bg.jpg');
+    background-repeat: repeat;
+    background-size: 10%;
+    position: relative;
+  }
+  .blogs{
+    width: 57%;
+    position: absolute;
+    top: 15px;
+    left: 10%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+  .blog-item{
+    width: 95%;
+    height: 180px;
     background: #ffffff;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 9px 0 rgb(30, 30, 30, 0.2);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .scale-pic{
+    width: 36%;
+    height: 180px;
+    border-radius: 4px 0px 0px 4px;
+    background-image: url('~@/assets/scale.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .article{
+    width: 64%;
+    height: 180px;
+    background: #ffffff;
+    border-radius: 0px 4px 4px 0px;
+  }
+  .card{
+    width: 20%;
+    margin-left: 3%;
+    background:red;
+    position: absolute;
+    top: 15px;
+    right: 10%;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .article-title{
+    width: 95%;
+    margin-left: 5%;
+    margin-top: 10px;
+    display: flex;
+    justify-content: left;
+  }
+  .article-attributes{
+    width: 95%;
+    margin-left: 5%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    font-size: 0.4em;
+    justify-content: left;
+  }
+  .article-attributes a{
+      color: rgb(37, 63, 80);
+  }
+  a:hover{
+    text-decoration: underline;
+    color: blue;
+  }
+  .article-content{
+    width: 92%;
+    height: 7.5em;
+    margin-left: 5%;
+    font-size: 0.9em;
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 1.5em;
+    /* 省略号展示多余内容
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      text-overflow: ellipsis;
+      overflow: hidden;
+     */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 5;
   }
 </style>
