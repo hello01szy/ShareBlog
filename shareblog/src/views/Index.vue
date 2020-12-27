@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <div id="menu" :class="{ move: dissipate, menumove: !dissipate}">
+    <div :class="{ menu:true, sticky: sticky, move: menuDissipate, menumove: !dissipate}">
       <div class="menuItem"><i class="fa fa-search" aria-hidden="true"> 搜索</i></div>
       <div class="menuItem"><i style="font: size 1.2em;" class="fa fa-home" aria-hidden="true"> 首页</i></div>
       <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"> 文章</i></div>
@@ -55,7 +55,18 @@
             </div>
           </div>
         </div>
-        <div class="card"></div>
+        <div class="card">
+          <div class="introduction">
+            <div class="avator"></div>
+            <div class="slagon">
+              <h4>Hello Kity</h4>
+              <span>不忘初心，牢记使命</span>
+            </div>
+            <div class="blog-attributes"></div>
+            <div class="follow-btn"></div>
+            <div class="recommand"></div>
+          </div>
+        </div>
     </div>
   </div>
 </template>
@@ -66,17 +77,30 @@ export default {
   data () {
     return {
       dissipate: false,
-      scrollTop: 0
+      menuDissipate: false,
+      scrollTop: 0,
+      sticky: false
     }
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
     handleScroll (event) {
+      const delta = event.target.scrollTop - this.scrollTop
       this.scrollTop = event.target.scrollTop
       if (this.scrollTop !== 0) {
         this.dissipate = true
       } else {
         this.dissipate = false
+      }
+      if (delta < 0 && this.scrollTop !== 0) {
+        console.log('top sticky')
+        this.sticky = true
+        this.menuDissipate = false
+      } else if (delta < 0 && this.scrollTop === 0) {
+        this.sticky = false
+      } else if (delta > 0) {
+        this.sticky = false
+        this.menuDissipate = true
       }
     },
     // 点击向下图标，让滚动条向下滚动
@@ -105,7 +129,7 @@ export default {
     position: relative;
     overflow-x: hidden;
   }
-  #menu{
+  .menu{
     position: absolute;
     top: 0px;
     left: 0px;
@@ -117,6 +141,10 @@ export default {
     justify-content: flex-end;
     align-items: center;
     transition: all 0.5s linear;
+  }
+  .sticky{
+    position: sticky;
+    opacity: 1;
   }
   .menuItem{
     margin-right: 30px;
@@ -242,6 +270,10 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    transition: all 0.2s linear;
+  }
+  .blog-item:hover{
+    box-shadow: 0 0 30px 0 rgb(30, 30, 30, 0.4);
   }
   .scale-pic{
     width: 36%;
@@ -250,7 +282,11 @@ export default {
     background-image: url('~@/assets/scale.jpg');
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: 100% 100%;
+    transition: all 1s ease;
+  }
+  .scale-pic:hover{
+    background-size: 150% 150%;
   }
   .article{
     width: 64%;
@@ -261,12 +297,58 @@ export default {
   .card{
     width: 20%;
     margin-left: 3%;
-    background:red;
+    /* background:red; */
     position: absolute;
     top: 15px;
     right: 10%;
     padding-top: 10px;
     padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .introduction{
+    width: 95%;
+    height: 240px;
+    border-radius: 2px;
+    background: #ffffff;
+    box-shadow: 0 0 9px 0 rgb(30, 30, 30, 0.2);
+    transition: all 0.2s linear;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+  }
+  .introduction:hover{
+    box-shadow: 0 0 30px 0 rgb(30, 30, 30, 0.4);
+  }
+  .avator{
+    width: 60px;
+    height: 60px;
+    background-image: url('~@/assets/me.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+    box-shadow: 0 0 4px 0 rgb(30, 30, 30, 0.2);
+  }
+  .slagon{
+    width: 95%;
+    height: 45px;
+    padding-top: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: blue;
+  }
+  .slagon span{
+    margin-top: 4px;
+    font-size:0.8em;
+    line-height:1.5em;
+  }
+  .blog-attributes{
+    width: 95%;
+    height: 100px;
+    background: red;
   }
   .article-title{
     width: 95%;
@@ -290,6 +372,9 @@ export default {
   a:hover{
     text-decoration: underline;
     color: blue;
+  }
+  h2{
+    cursor: pointer;
   }
   .article-content{
     width: 92%;
