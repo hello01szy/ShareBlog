@@ -1,14 +1,6 @@
 <template>
   <div class="header">
-    <div :class="{ menu:true, sticky: sticky, move: menuDissipate, menumove: !dissipate}">
-      <div class="menuItem"><i class="fa fa-search" aria-hidden="true"> 搜索</i></div>
-      <div class="menuItem"><i style="font: size 1.2em;" class="fa fa-home" aria-hidden="true"> 首页</i></div>
-      <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"> 文章</i></div>
-      <div class="menuItem"><i class="fa fa-wrench" aria-hidden="true"> 工具</i></div>
-      <div class="menuItem"><i class="fa fa-link" aria-hidden="true"> 链接</i></div>
-      <div class="menuItem"><i class="fa fa-comments-o" aria-hidden="true"> 留言板</i> </div>
-      <div class="menuItem"><i class="fa fa-info" aria-hidden="true"> 关于</i></div>
-    </div>
+    <Header :childSticky="sticky" :childMenuDissipate="menuDissipate" :childDissipate="dissipate"></Header>
     <div class="cover">
       <span id="title" :class="{ move: dissipate}">欢迎来到我的博客</span>
       <div id="saying" :class="{ move: dissipate}">
@@ -72,6 +64,7 @@
 </template>
 
 <script>
+import Header from '@/views/components/Header'
 export default {
   name: 'Index',
   data () {
@@ -81,6 +74,9 @@ export default {
       scrollTop: 0,
       sticky: false
     }
+  },
+  components: {
+    Header
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
@@ -93,11 +89,11 @@ export default {
         this.dissipate = false
       }
       if (delta < 0 && this.scrollTop !== 0) {
-        console.log('top sticky')
         this.sticky = true
         this.menuDissipate = false
       } else if (delta < 0 && this.scrollTop === 0) {
         this.sticky = false
+        this.menuDissipate = false
       } else if (delta > 0) {
         this.sticky = false
         this.menuDissipate = true
@@ -110,7 +106,6 @@ export default {
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
-    this.$nextTick()
   },
   destoryed () {
     window.removeEventListener('scroll', this.handleScroll)
@@ -121,41 +116,13 @@ export default {
   .header {
     width: 100vw;
     height: 100vh;
-    background-image: url('~@/assets/family.jpg');
+    background-image: url('~@/assets/animal.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
     background-attachment: fixed;
     position: relative;
     overflow-x: hidden;
-  }
-  .menu{
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 200;
-    width: 100%;
-    height: 35px;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    transition: all 0.5s linear;
-  }
-  .sticky{
-    position: sticky;
-    opacity: 1;
-  }
-  .menuItem{
-    margin-right: 30px;
-    color: #d4cfcf;
-    /* opacity: 0.8; */
-    font-size: 0.9em;
-    cursor: pointer;
-  }
-  .menuItem :hover{
-    color: #ffffff;
-    transition: all 0.4s ease;
   }
   .cover{
     width:100%;
@@ -199,9 +166,6 @@ export default {
   .move{
     opacity: 0;
   }
-  .menumove{
-    animation: show-then-hide 0.5s linear;
-  }
   .down{
     position: absolute;
     bottom: 20px;
@@ -216,14 +180,6 @@ export default {
   @keyframes blink-caret {
     from, to { box-shadow: 2px 0 0 0 transparent; }
     50% { box-shadow: 2px 0 0 0; }
-  }
-  @keyframes show-then-hide{
-    from{
-      background-color: rgb(30, 30, 30);
-    }
-    to{
-      background-color: transparent;
-    }
   }
   @keyframes up-then-down {
     0%{
