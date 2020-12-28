@@ -14,50 +14,68 @@
     </div>
     <div id="content">
         <div class="blogs">
-          <div class="blog-item">
-            <div class="scale-pic">
-            </div>
-            <div class="article">
-              <div class="article-title">
-                <h2>Just like a dog,就像一条狗</h2>
+          <Card>
+            <template v-slot:pic>
+              <!-- <div class="scale-pic"></div> -->
+              <div class="pic-frame">
+                <img src="https://picsum.photos/300/200" alt="haha" class="scale-pic">
               </div>
-              <div class="article-attributes">
-                <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
+            </template>
+            <template v-slot:blog>
+              <div class="article">
+                <div class="article-title">
+                  <h2>Just like a dog,就像一条狗</h2>
+                </div>
+                <div class="article-attributes">
+                  <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
+                </div>
+                <div class="article-content">
+                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+                </div>
               </div>
-              <div class="article-content">
-                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
-                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+            </template>
+          </Card>
+          <Card>
+            <template v-slot:pic>
+              <!-- <div class="scale-pic"></div> -->
+              <div class="pic-frame">
+                <img src="https://picsum.photos/300/200" alt="haha" class="scale-pic">
               </div>
-            </div>
-          </div>
-          <div class="blog-item">
-            <div class="scale-pic">
-            </div>
-            <div class="article">
-              <div class="article-title">
-                <h2>Just like a dog,就像一条狗</h2>
+            </template>
+            <template v-slot:blog>
+              <div class="article">
+                <div class="article-title">
+                  <h2>Just like a dog,就像一条狗</h2>
+                </div>
+                <div class="article-attributes">
+                  <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
+                </div>
+                <div class="article-content">
+                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+                </div>
               </div>
-              <div class="article-attributes">
-                <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
-              </div>
-              <div class="article-content">
-                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
-                曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
-              </div>
-            </div>
-          </div>
+            </template>
+          </Card>
         </div>
-        <div class="card">
-          <div class="introduction">
-            <div class="avator"></div>
-            <div class="slagon">
-              <h4>Hello Kity</h4>
-              <span>不忘初心，牢记使命</span>
-            </div>
-            <div class="blog-attributes"></div>
-            <div class="follow-btn"></div>
-            <div class="recommand"></div>
-          </div>
+        <!-- <div class="card"> -->
+        <div class="card-container">
+          <Card :childWidth=childWidth :childHeight=childHeight>
+            <template v-slot:blog>
+              <div class="introduction">
+                <div class="avator"></div>
+                <div class="slagon">
+                  <h4>hello01szy</h4>
+                  <span>不忘初心，牢记使命</span>
+                </div>
+                <div class="blog-attributes">
+                </div>
+                <div class="follow-btn"></div>
+                <div class="recommand"></div>
+              </div>
+            </template>
+          </Card>
         </div>
     </div>
   </div>
@@ -65,6 +83,7 @@
 
 <script>
 import Header from '@/views/components/Header'
+import Card from '@/views/components/Card'
 export default {
   name: 'Index',
   data () {
@@ -72,11 +91,14 @@ export default {
       dissipate: false,
       menuDissipate: false,
       scrollTop: 0,
-      sticky: false
+      sticky: false,
+      childWidth: '100%',
+      childHeight: '240px'
     }
   },
   components: {
-    Header
+    Header,
+    Card
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
@@ -215,34 +237,21 @@ export default {
     flex-direction: column;
     align-items: center;
   }
-  .blog-item{
-    width: 95%;
-    height: 180px;
-    background: #ffffff;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 9px 0 rgb(30, 30, 30, 0.2);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.2s linear;
-  }
-  .blog-item:hover{
-    box-shadow: 0 0 30px 0 rgb(30, 30, 30, 0.4);
-  }
   .scale-pic{
-    width: 36%;
-    height: 180px;
+    width: 100%;
+    height: 100%;
     border-radius: 4px 0px 0px 4px;
-    background-image: url('~@/assets/scale.jpg');
-    background-position: center;
     background-repeat: no-repeat;
     background-size: 100% 100%;
     transition: all 1s ease;
   }
   .scale-pic:hover{
-    background-size: 150% 150%;
+    transform: scale(1.5);
+  }
+  .pic-frame{
+    width: 36%;
+    overflow: hidden;
+    height: 180px;
   }
   .article{
     width: 64%;
@@ -250,10 +259,9 @@ export default {
     background: #ffffff;
     border-radius: 0px 4px 4px 0px;
   }
-  .card{
+  .card-container{
     width: 20%;
     margin-left: 3%;
-    /* background:red; */
     position: absolute;
     top: 15px;
     right: 10%;
@@ -264,19 +272,12 @@ export default {
     align-items: center;
   }
   .introduction{
-    width: 95%;
-    height: 240px;
-    border-radius: 2px;
-    background: #ffffff;
-    box-shadow: 0 0 9px 0 rgb(30, 30, 30, 0.2);
-    transition: all 0.2s linear;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-top: 20px;
-  }
-  .introduction:hover{
-    box-shadow: 0 0 30px 0 rgb(30, 30, 30, 0.4);
   }
   .avator{
     width: 60px;
@@ -294,7 +295,6 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: blue;
   }
   .slagon span{
     margin-top: 4px;
@@ -304,7 +304,6 @@ export default {
   .blog-attributes{
     width: 95%;
     height: 100px;
-    background: red;
   }
   .article-title{
     width: 95%;
