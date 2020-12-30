@@ -70,8 +70,23 @@
                   <span>不忘初心，牢记使命</span>
                 </div>
                 <div class="blog-attributes">
+                  <table border="0" style="width: 90%">
+                    <tr>
+                      <th>文章</th>
+                      <th>标签</th>
+                      <th>分类</th>
+                    </tr>
+                    <tr>
+                      <td><a href="#">100</a></td>
+                      <td><a href="#">100</a></td>
+                      <td><a href="#">100</a></td>
+                    </tr>
+                  </table>
                 </div>
-                <div class="follow-btn"></div>
+                <div class="follow-btn">
+                  <!-- <button><i class="fa fa-github" aria-hidden="true"></i> <span>Follow</span></button> -->
+                  <BgExpandBtn :icon="childIcon" :iconColor="iconColor" :afBg="afBg"></BgExpandBtn>
+                </div>
                 <div class="recommand"></div>
               </div>
             </template>
@@ -84,6 +99,7 @@
 <script>
 import Header from '@/views/components/Header'
 import Card from '@/views/components/Card'
+import BgExpandBtn from '@/components/BgExpandBtn'
 export default {
   name: 'Index',
   data () {
@@ -93,12 +109,19 @@ export default {
       scrollTop: 0,
       sticky: false,
       childWidth: '100%',
-      childHeight: '240px'
+      childHeight: '240px',
+      tableData: [
+        { articleNum: 100, tag: 100, classify: 100 }
+      ],
+      childIcon: 'fa fa-github',
+      iconColor: '#ffffff',
+      afBg: '#487eb0'
     }
   },
   components: {
     Header,
-    Card
+    Card,
+    BgExpandBtn
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
@@ -134,7 +157,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scope>
   .header {
     width: 100vw;
     height: 100vh;
@@ -303,7 +326,25 @@ export default {
   }
   .blog-attributes{
     width: 95%;
-    height: 100px;
+    padding-bottom: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  th{
+    font-size: 0.8em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  td{
+    padding-top: 10px;
+  }
+  td a{
+    color: rgb(37, 63, 80);
+  }
+  .follow-btn{
+    width: 95%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .article-title{
     width: 95%;
@@ -324,7 +365,7 @@ export default {
   .article-attributes a{
       color: rgb(37, 63, 80);
   }
-  a:hover{
+  .blogs a:hover{
     text-decoration: underline;
     color: blue;
   }
