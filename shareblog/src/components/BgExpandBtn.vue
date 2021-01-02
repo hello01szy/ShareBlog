@@ -26,7 +26,9 @@ export default {
     // 定义字体大小
     spanFontSize: String,
     // 定义span字体颜色
-    spanFontColor: String
+    spanFontColor: String,
+    // 定义icon的颜色
+    iconColor: String
   },
   methods: {
     mouseOver (event) {

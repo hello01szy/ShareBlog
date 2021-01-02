@@ -61,36 +61,7 @@
         </div>
         <!-- <div class="card"> -->
         <div class="card-container">
-          <Card :childWidth=childWidth :childHeight=childHeight>
-            <template v-slot:blog>
-              <div class="introduction">
-                <div class="avator"></div>
-                <div class="slagon">
-                  <h4>hello01szy</h4>
-                  <span>不忘初心，牢记使命</span>
-                </div>
-                <div class="blog-attributes">
-                  <table border="0" style="width: 90%">
-                    <tr>
-                      <th>文章</th>
-                      <th>标签</th>
-                      <th>分类</th>
-                    </tr>
-                    <tr>
-                      <td><a href="#">100</a></td>
-                      <td><a href="#">100</a></td>
-                      <td><a href="#">100</a></td>
-                    </tr>
-                  </table>
-                </div>
-                <div class="follow-btn">
-                  <!-- <button><i class="fa fa-github" aria-hidden="true"></i> <span>Follow</span></button> -->
-                  <BgExpandBtn :icon="childIcon" :iconColor="iconColor" :afBg="afBg"></BgExpandBtn>
-                </div>
-                <div class="recommand"></div>
-              </div>
-            </template>
-          </Card>
+          <Introduction></Introduction>
         </div>
     </div>
   </div>
@@ -99,7 +70,7 @@
 <script>
 import Header from '@/views/components/Header'
 import Card from '@/views/components/Card'
-import BgExpandBtn from '@/components/BgExpandBtn'
+import Introduction from '@/views/components/Introduction'
 export default {
   name: 'Index',
   data () {
@@ -107,21 +78,13 @@ export default {
       dissipate: false,
       menuDissipate: false,
       scrollTop: 0,
-      sticky: false,
-      childWidth: '100%',
-      childHeight: '240px',
-      tableData: [
-        { articleNum: 100, tag: 100, classify: 100 }
-      ],
-      childIcon: 'fa fa-github',
-      iconColor: '#ffffff',
-      afBg: '#487eb0'
+      sticky: false
     }
   },
   components: {
     Header,
     Card,
-    BgExpandBtn
+    Introduction
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
@@ -292,58 +255,6 @@ export default {
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-  }
-  .introduction{
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-  }
-  .avator{
-    width: 60px;
-    height: 60px;
-    background-image: url('~@/assets/me.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-radius: 50%;
-    box-shadow: 0 0 4px 0 rgb(30, 30, 30, 0.2);
-  }
-  .slagon{
-    width: 95%;
-    height: 45px;
-    padding-top: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .slagon span{
-    margin-top: 4px;
-    font-size:0.8em;
-    line-height:1.5em;
-  }
-  .blog-attributes{
-    width: 95%;
-    padding-bottom: 10px;
-    display: flex;
-    justify-content: center;
-  }
-  th{
-    font-size: 0.8em;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  td{
-    padding-top: 10px;
-  }
-  td a{
-    color: rgb(37, 63, 80);
-  }
-  .follow-btn{
-    width: 95%;
-    display: flex;
-    justify-content: center;
     align-items: center;
   }
   .article-title{
