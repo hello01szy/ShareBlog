@@ -14,39 +14,17 @@
     </div>
     <div id="content">
         <div class="blogs">
-          <Card>
+          <Card v-for="(item, key) in blogs" :key="key">
             <template v-slot:pic>
               <!-- <div class="scale-pic"></div> -->
               <div class="pic-frame">
-                <img src="https://picsum.photos/300/200" alt="haha" class="scale-pic">
+                <img src="~@/assets/scale.jpg" alt="haha" class="scale-pic">
               </div>
             </template>
             <template v-slot:blog>
               <div class="article">
                 <div class="article-title">
-                  <h2>Just like a dog,就像一条狗</h2>
-                </div>
-                <div class="article-attributes">
-                  <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
-                </div>
-                <div class="article-content">
-                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
-                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
-                </div>
-              </div>
-            </template>
-          </Card>
-          <Card>
-            <template v-slot:pic>
-              <!-- <div class="scale-pic"></div> -->
-              <div class="pic-frame">
-                <img src="https://picsum.photos/300/200" alt="haha" class="scale-pic">
-              </div>
-            </template>
-            <template v-slot:blog>
-              <div class="article">
-                <div class="article-title">
-                  <h2>Just like a dog,就像一条狗</h2>
+                  <h2>{{ item.title }}</h2>
                 </div>
                 <div class="article-attributes">
                   <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
@@ -78,13 +56,19 @@ export default {
       dissipate: false,
       menuDissipate: false,
       scrollTop: 0,
-      sticky: false
+      sticky: false,
+      // 定义博客列表
+      blogs:[],
+      // 定义分类卡片的宽度
+      classifyCardW: '100%',
+      classifyCardH: '100px'
     }
   },
   components: {
     Header,
     Card,
-    Introduction
+    Introduction,
+    Card
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
@@ -110,7 +94,17 @@ export default {
     // 点击向下图标，让滚动条向下滚动
     dropdown () {
       // 设置让滚动条缓慢移动对应位置
+    },
+    getBlogs(){
+      this.$axios.get('/test').then(res => {
+        this.blogs = res.data
+      }).catch(error => {
+        console.log(error)
+      })
     }
+  },
+  created () {
+    this.getBlogs()
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
@@ -205,15 +199,16 @@ export default {
   }
   #content{
     width: 100%;
-    height: 600px;
+    height: auto;
     background-image: url('~@/assets/bg.jpg');
     background-repeat: repeat;
     background-size: 10%;
     position: relative;
+    overflow: hidden;
   }
   .blogs{
     width: 57%;
-    position: absolute;
+    position: relative;
     top: 15px;
     left: 10%;
     padding-top: 10px;
