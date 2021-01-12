@@ -44,7 +44,75 @@
             </div>
             <div class="head-classify-title">分类</div>
           </div>
-          <div class="bodylist"></div>
+          <div class="bodylist">
+            <select class="classifyS-select">
+              <option>后端</option>
+              <option>前端</option>
+              <option>运维</option>
+            </select>
+          </div>
+        </div>
+      </template>
+    </Card>
+    <Card :childWidth="childWidth" :childHeight="childHeight">
+      <template v-slot:blog>
+        <div class="classify">
+          <div class="head">
+            <div class="head-classify-icon">
+              <svg t="1610457691365" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4049" width="28" height="28"><path d="M512.213333 64.213333c247.424 0 448 200.576 448 448s-200.576 448-448 448-448-200.576-448-448a32 32 0 1 1 64 0c0 212.096 171.946667 384 384 384 212.096 0 384-171.904 384-384 0-212.053333-171.904-384-384-384a383.338667 383.338667 0 0 0-309.077333 156.096c-12.8 17.301333-24.106667 35.648-33.792 54.826667a32 32 0 0 1-57.109333-28.864 448.064 448.064 0 0 1 39.424-63.978667A447.317333 447.317333 0 0 1 512.213333 64.213333z" fill="#253f50" p-id="4050"></path><path d="M117.333333 170.666667A32 32 0 0 1 149.333333 202.666667v128a32 32 0 0 1-64 0v-128A32 32 0 0 1 117.333333 170.666667zM480 298.666667a32 32 0 0 1 32 32v234.666666a32 32 0 0 1-64 0v-234.666666a32 32 0 0 1 32-32z" fill="#253f50" p-id="4051"></path><path d="M277.333333 330.666667a32 32 0 0 1-32 32h-128a32 32 0 0 1 0-64h128a32 32 0 0 1 32 32zM682.666667 565.333333a32 32 0 0 1-32 32h-170.666667a32 32 0 0 1 0-64h170.666667a32 32 0 0 1 32 32z" fill="#253f50" p-id="4052"></path></svg>
+            </div>
+            <div class="head-classify-title">最新文章</div>
+          </div>
+          <div class="bodylist">
+            <div class="bodyitem">
+              <Card :childWidth="sideChildWidth" :childHeight="sideChildHeight" class="item-card">
+                <template v-slot:pic>
+                  <img src="@/assets/me.jpg" alt="me">
+                </template>
+                <template v-slot:blog>
+                  <div class="side-article">
+                    <span>如何使用NFS如何使用NFS如何使用NFS</span>
+                  </div>
+                </template>
+              </Card>
+            </div>
+            <div class="bodyitem">
+              <Card :childWidth=sideChildWidth :childHeight=sideChildHeight class="item-card">
+                <template v-slot:pic>
+                  <img src="@/assets/me.jpg" alt="me">
+                </template>
+                <template v-slot:blog>
+                  <div class="side-article">
+                    <span>如何使用NFS如何使用NFS如何使用NFS</span>
+                  </div>
+                </template>
+              </Card>
+            </div>
+            <div class="bodyitem">
+              <Card :childWidth=sideChildWidth :childHeight=sideChildHeight class="item-card">
+                <template v-slot:pic>
+                  <img src="@/assets/me.jpg" alt="me">
+                </template>
+                <template v-slot:blog>
+                  <div class="side-article">
+                    <span>如何使用NFS如何使用NFS如何使用NFS</span>
+                  </div>
+                </template>
+              </Card>
+            </div>
+            <div class="bodyitem">
+              <Card :childWidth=sideChildWidth :childHeight=sideChildHeight class="item-card">
+                <template v-slot:pic>
+                  <img src="@/assets/me.jpg" alt="me">
+                </template>
+                <template v-slot:blog>
+                  <div class="side-article">
+                    <span>如何使用NFS如何使用NFS如何使用NFS</span>
+                  </div>
+                </template>
+              </Card>
+            </div>
+          </div>
         </div>
       </template>
     </Card>
@@ -59,6 +127,8 @@ export default {
     return {
       childWidth: '100%',
       childHeight: '280px',
+      sideChildWidth: '95%',
+      sideChildHeight: '100%',
       tableData: [
         { articleNum: 100, tag: 100, classify: 100 }
       ],
@@ -74,7 +144,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .blog-attributes{
     width: 95%;
     padding-bottom: 10px;
@@ -164,24 +234,72 @@ export default {
   }
   .head-classify-icon{
     width: 20%;
-    height: 10%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
   }
   .head-classify-title{
     width: 79%;
-    height: 10%;
+    height: 100%;
     line-height: 10%;
     margin-left: 1%;
     font-size: 1.2em;
     font-weight: 500;
     display: flex;
-    justify-content: start;
+    justify-content: left;
+    align-items: center;
   }
   .bodylist{
     width: 100%;
     height: 85%;
-    background-color: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .classifyS-select{
+    background-color: transparent;
+    width: 90%;
+    outline: none;
+  }
+  /* 布局介绍中的最新文章 */
+  .bodyitem{
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 3%;
+  }
+  .item-card{
+    margin-bottom: 0px;
+    box-shadow: none;
+    border-radius: 0px;
+    box-sizing: border-box;
+    padding: 2px;
+  }
+  .item-card:hover{
+    box-shadow: none;
+  }
+  .item-card img{
+    width: 25%;
+    height: 100%;
+    background-size: cover;
+  }
+  .side-article{
+    width: 75%;
+    height: 100%;
+    text-align: left;
+  }
+  .side-article span{
+    word-wrap: normal;
+    overflow: hidden;
+    font-size: 0.8em;
+    transition: all 0.1s linear;
+  }
+  .side-article span:hover{
+    color: #00b4f6;
   }
 </style>

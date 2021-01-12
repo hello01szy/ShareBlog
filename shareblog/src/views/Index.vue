@@ -58,7 +58,7 @@ export default {
       scrollTop: 0,
       sticky: false,
       // 定义博客列表
-      blogs:[],
+      blogs: [],
       // 定义分类卡片的宽度
       classifyCardW: '100%',
       classifyCardH: '100px'
@@ -67,8 +67,7 @@ export default {
   components: {
     Header,
     Card,
-    Introduction,
-    Card
+    Introduction
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
@@ -95,7 +94,7 @@ export default {
     dropdown () {
       // 设置让滚动条缓慢移动对应位置
     },
-    getBlogs(){
+    getBlogs () {
       this.$axios.get('/test').then(res => {
         this.blogs = res.data
       }).catch(error => {
