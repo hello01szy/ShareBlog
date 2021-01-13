@@ -35,7 +35,7 @@
         </div>
       </template>
     </Card>
-    <Card :childWidth="childWidth" :childHeight="childHeight">
+    <Card :childWidth="childWidth" :childHeight="classifyCardHeight">
       <template v-slot:blog>
         <div class="classify">
           <div class="head">
@@ -45,11 +45,15 @@
             <div class="head-classify-title">分类</div>
           </div>
           <div class="bodylist">
-            <select class="classifyS-select">
-              <option>后端</option>
-              <option>前端</option>
-              <option>运维</option>
-            </select>
+            <div class="tree-item">
+              <div class="tree-item-tag"><span>{classify.tag}</span><span>({classify.counts})</span></div>
+              <ul class="tree-item-ul">
+                <li>{classify.child1}</li>
+                <li>{classify.child2}</li>
+                <li>{classify.child3}</li>
+                <li>{classify.child4}</li>
+              </ul>
+            </div>
           </div>
         </div>
       </template>
@@ -71,7 +75,7 @@
                 </template>
                 <template v-slot:blog>
                   <div class="side-article">
-                    <span>如何使用NFS如何使用NFS如何使用NFS</span>
+                    <span><a href="#">如何使用NFS如何使用NFS如何使用NFS</a></span>
                   </div>
                 </template>
               </Card>
@@ -129,6 +133,7 @@ export default {
       childHeight: '280px',
       sideChildWidth: '95%',
       sideChildHeight: '100%',
+      classifyCardHeight: 'auto',
       tableData: [
         { articleNum: 100, tag: 100, classify: 100 }
       ],
@@ -198,18 +203,12 @@ export default {
     line-height:1.5em;
   }
   .recommand{
-    width: 95%;
+    width: 76%;
     margin-top: 10px;
     display: flex;
     flex-direction: row;
-    justify-content: center;
-  }
-  .recommand-center{
-    margin-left: 30px;
-    margin-right: 30px;
-  }
-  .recommand-right{
-    margin-right: 30px;
+    align-items: center;
+    justify-content: space-between;
   }
   .outer{
     width: 100%;
@@ -257,6 +256,10 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 10px;
+  }
+  .bodylist li{
+    list-style: none;
   }
   .classifyS-select{
     background-color: transparent;
@@ -301,5 +304,31 @@ export default {
   }
   .side-article span:hover{
     color: #00b4f6;
+  }
+  .tree-item{
+    width: 100%;
+    background-color: blue;
+  }
+  .tree-item-tag{
+    width: 100%;
+    height: 28px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background-color: red;
+  }
+  .tree-item-ul li{
+    width: 100%;
+    background-color: #00b4f6;
+    height: 28px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    transition: all 0.3s linear;
+  }
+  .tree-item-ul li:hover{
+    background-color: #ffffff;
   }
 </style>

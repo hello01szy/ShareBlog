@@ -26,6 +26,8 @@ export default {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    box-sizing: border-box;
+    padding-bottom: 10px;
     transition: all 0.2s linear;
   }
   .blog-item:hover{

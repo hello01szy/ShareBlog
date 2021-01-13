@@ -147,7 +147,7 @@ export default {
   }
   #saying{
     margin-top: 10px;
-    width: 60%;
+    width: 100%;
     font-size: 1.2em;
     color: #ffffff;
     font-family: 'Times New Roman', Times, serif;
@@ -156,11 +156,14 @@ export default {
     border-right: 2px solid transparent;
     justify-content: flex-start;
     transition: all 0.5s linear;
+    position: relative;
   }
   #saying span{
+    position: relative;
     width: 17em;
-    margin-left: 400px;
+    /* margin-left: 400px; */
     overflow: hidden;
+    left: 50%;
     white-space: nowrap;
     animation: typing 3.5s steps(17, end), blink-caret .75s step-end infinite;
   }
