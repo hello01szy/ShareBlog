@@ -38,7 +38,7 @@ export default {
       this.$refs.mybtn.style.backgroundColor = this.preBg
     },
     follow () {
-      this.$axios.get('/blog/test', {
+      this.$axios.get('/test', {
         params: {
         }
       }).then(res => {

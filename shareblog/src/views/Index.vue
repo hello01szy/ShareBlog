@@ -1,5 +1,5 @@
 <template>
-  <div class="header">
+  <div class="header" ref="header">
     <Header :childSticky="sticky" :childMenuDissipate="menuDissipate" :childDissipate="dissipate"></Header>
     <div class="cover">
       <span id="title" :class="{ move: dissipate}">欢迎来到我的博客</span>
@@ -61,7 +61,9 @@ export default {
       blogs: [],
       // 定义分类卡片的宽度
       classifyCardW: '100%',
-      classifyCardH: '100px'
+      classifyCardH: '100px',
+      // 定义滚动条距离顶部的距离
+      top: 0
     }
   },
   components: {
@@ -93,6 +95,19 @@ export default {
     // 点击向下图标，让滚动条向下滚动
     dropdown () {
       // 设置让滚动条缓慢移动对应位置
+      const height = this.$refs['header'].offsetHeight
+      this.top = this.$refs['header'].scrollTop
+      console.log(height)
+      let timer = setInterval(() => {
+        const speed = (height - this.top) / 3
+        if (this.top >= (height - 2)) {
+          this.top = height
+          clearInterval(timer)
+        }
+        this.top = this.top + speed
+        this.$refs['header'].scrollTop = this.top
+        console.log(this.top)
+      }, 30)
     },
     getBlogs () {
       this.$axios.get('/test').then(res => {

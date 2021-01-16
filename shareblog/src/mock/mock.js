@@ -14,4 +14,22 @@ const articlesData = () => {
   return articles
 }
 
+const dropDownData = () => {
+  const datas = []
+  for (let i = 0; i < 4; i++) {
+    const data = {
+      'tag': random.ctitle(),
+      'counts': 10,
+      'childs': [
+        { 'tag': random.ctitle(), 'counts': 2 },
+        { 'tag': random.ctitle(), 'counts': 3 },
+        { 'tag': random.ctitle(), 'counts': 1 }
+      ]
+    }
+    datas.push(data)
+  }
+  return datas
+}
+
 Mock.mock('/test', 'get', articlesData)
+Mock.mock('/tag', 'get', dropDownData)

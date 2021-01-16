@@ -45,13 +45,10 @@
             <div class="head-classify-title">分类</div>
           </div>
           <div class="bodylist">
-            <div class="tree-item">
-              <div class="tree-item-tag"><span>{classify.tag}</span><span>({classify.counts})</span></div>
+            <div class="tree-item" v-for="(tag, index) in tagData" :key="index">
+              <div class="tree-item-tag" @click="dropdown(index)"><span>{{ tag.tag }}({{ tag.counts }})</span><span class="arrow"><svg t="1610729395777" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="61160" width="28" height="28"><path d="M401.152 527.744l203.093333 186.154667a21.333333 21.333333 0 0 0 35.754667-15.744V325.845333a21.333333 21.333333 0 0 0-35.754667-15.744l-203.093333 186.154667a21.333333 21.333333 0 0 0 0 31.488z" fill="#253f50" fill-opacity=".86" p-id="61161"></path></svg></span></div>
               <ul class="tree-item-ul">
-                <li>{classify.child1}</li>
-                <li>{classify.child2}</li>
-                <li>{classify.child3}</li>
-                <li>{classify.child4}</li>
+                <li v-for="(data, i) in tag.childs" :key="i">{{ data.tag }}({{ data.counts }})</li>
               </ul>
             </div>
           </div>
@@ -139,12 +136,33 @@ export default {
       ],
       childIcon: 'fa fa-github',
       iconColor: '#ffffff',
-      afBg: '#487eb0'
+      afBg: '#487eb0',
+      tagData: []
     }
   },
   components: {
     Card,
     BgExpandBtn
+  },
+  methods: {
+    dropdown (key, event) {
+      const obj = document.getElementsByClassName('tree-item-ul')[key]
+      const arrow = document.getElementsByClassName('arrow')[key]
+      if (obj.classList.contains('show')) {
+        obj.classList.remove('show')
+        arrow.classList.remove('rotate')
+      } else {
+        obj.classList.add('show')
+        arrow.classList.add('rotate')
+      }
+    }
+  },
+  created () {
+    this.$axios.get('/tag').then(res => {
+      this.tagData = res.data
+    }).catch(error => {
+      console.log(error.data)
+    })
   }
 }
 </script>
@@ -307,28 +325,58 @@ export default {
   }
   .tree-item{
     width: 100%;
-    background-color: blue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 0.9em;
   }
   .tree-item-tag{
-    width: 100%;
+    width: 85%;
     height: 28px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
-    background-color: red;
+    justify-content: space-between;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.2s linear;
+    margin-left: 4%;
+    overflow: hidden;
+    word-wrap: none;
+  }
+  .tree-item-tag:hover{
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: #00b4f6;
+  }
+  .tree-item-ul{
+    display: none;
   }
   .tree-item-ul li{
     width: 100%;
-    background-color: #00b4f6;
     height: 28px;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
     transition: all 0.3s linear;
+    box-sizing: border-box;
+    padding-left: 10%;
+    font-size: 0.8em;
   }
   .tree-item-ul li:hover{
-    background-color: #ffffff;
+    background-color: #eeeeee;
+  }
+  .show{
+    display: block;
+  }
+  .rotate{
+    transform: rotate(-90deg);
+  }
+  .arrow{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    transition: all 0.1s linear;
   }
 </style>
