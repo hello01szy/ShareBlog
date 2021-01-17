@@ -1,12 +1,12 @@
 <template>
   <div :class="{ menu:true, sticky: childSticky, hide: childMenuDissipate, menumove: !childDissipate}">
     <div class="menuItem"><i class="fa fa-search" aria-hidden="true"> 搜索</i></div>
-    <div class="menuItem"><i style="font: size 1.2em;" class="fa fa-home" aria-hidden="true"> 首页</i></div>
+    <div class="menuItem"><router-link to="/"><i style="font: size 1.2em;" class="fa fa-home" aria-hidden="true"> 首页</i></router-link></div>
     <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"> 文章</i></div>
     <div class="menuItem"><i class="fa fa-wrench" aria-hidden="true"> 工具</i></div>
     <div class="menuItem"><i class="fa fa-link" aria-hidden="true"> 链接</i></div>
     <div class="menuItem"><i class="fa fa-comments-o" aria-hidden="true"> 留言板</i> </div>
-    <div class="menuItem"><i class="fa fa-info" aria-hidden="true"> 关于</i></div>
+    <div class="menuItem"><router-link to="/about"><i class="fa fa-info" aria-hidden="true"> 关于</i></router-link></div>
   </div>
 </template>
 
@@ -45,6 +45,9 @@ export default {
     /* opacity: 0.8; */
     font-size: 0.9em;
     cursor: pointer;
+  }
+  .menuItem a {
+    color: #d4cfcf
   }
   .menuItem :hover{
     color: #ffffff;

@@ -98,7 +98,7 @@ export default {
       const height = this.$refs['header'].offsetHeight
       this.top = this.$refs['header'].scrollTop
       console.log(height)
-      let timer = setInterval(() => {
+      const timer = setInterval(() => {
         const speed = (height - this.top) / 3
         if (this.top >= (height - 2)) {
           this.top = height
