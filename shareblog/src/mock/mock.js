@@ -3,7 +3,7 @@ const random = Mock.Random
 
 const articlesData = () => {
   const articles = []
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 7; i++) {
     const article = {
       'id': i,
       'title': random.ctitle(),
