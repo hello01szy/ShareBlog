@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="skipDiv">
-      <span id="pageSumLabel">共 {{ total }} 页</span>
+      <span id="pageSumLabel">共 {{ totalPage }} 页</span>
       <span id="pageInput">跳转至<input class="skip" autocomplete="off" @keydown="doEnter" />页</span>
     </div>
     <ul class="page-ul">
@@ -61,6 +61,9 @@ export default {
       let endPage = 0
       if (count <= pageSize) {
         startPage = total - pageSize + 1
+        if (startPage <= 0) {
+          startPage = 1
+        }
         endPage = total + 1
       } else {
         endPage = startPage + pageSize
@@ -89,6 +92,8 @@ export default {
         this.paging(currentPage, pageSize, total)
       })
       pageElement.appendChild(forwardBtn)
+      this.currentPageIndex = currentPage
+      this.$emit('dopage', this.currentPageIndex, this.pageSize)
     },
     doEnter (event) {
       if (event.keyCode === 13) {

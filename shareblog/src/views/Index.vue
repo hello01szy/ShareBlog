@@ -14,7 +14,7 @@
     </div>
     <div id="content">
         <div class="blogs">
-          <Card v-for="(item, key) in blogs" :key="key">
+          <Card v-for="(item, key) in showBlogs" :key="key">
             <template v-slot:pic>
               <!-- <div class="scale-pic"></div> -->
               <div class="pic-frame">
@@ -36,7 +36,7 @@
               </div>
             </template>
           </Card>
-          <Page :total="total"></Page>
+          <Page :total="total" @dopage="paging"></Page>
         </div>
         <div class="card-container">
           <Introduction></Introduction>
@@ -66,7 +66,9 @@ export default {
       // 定义滚动条距离顶部的距离
       top: 0,
       // 定义总共有多少个元素
-      total: 1
+      total: -1,
+      // 定义要展示的blog内容，是从blogs中获取的
+      showBlogs: []
     }
   },
   components: {
@@ -114,11 +116,22 @@ export default {
     getBlogs () {
         this.$axios.get('/test').then(res => {
         this.blogs = res.data.articles
-        this.total = parseInt(res.data.totalPage)
+        this.total = Math.ceil(parseInt(res.data.articles.length) / 5)
         console.log('getBlogs:' + this.total)
       }).catch(error => {
         console.log(error)
       })
+    },
+    paging (currentPage, pageSize) {
+      console.log(this.blogs)
+      let startIndex = (currentPage - 1) * pageSize
+      let endIndex = startIndex + pageSize
+      if (endIndex > this.blogs.length) {
+        endIndex = this.blogs.length
+      }
+      console.log('start:' + startIndex)
+      console.log('end:' + endIndex)
+      this.showBlogs = this.blogs.slice(startIndex, endIndex)
     }
   },
   created () {
@@ -227,6 +240,7 @@ export default {
     background-size: 10%;
     position: relative;
     overflow: hidden;
+    min-height: 968px;
   }
   .blogs{
     width: 57%;
