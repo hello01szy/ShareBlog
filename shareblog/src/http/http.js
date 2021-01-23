@@ -3,15 +3,6 @@ import qs from 'qs'
 
 var instance = axios.create()
 
-// if (process.env.NODE_ENV === 'development') {
-//   instance.defaults.baseURL = '/blog/'
-// } else if (process.env.NODE_ENV === 'debug') {
-//   instance.defaults.baseURL = '/blog/'
-// } else if (process.env.NODE_ENV === 'production') {
-//   instance.defaults.baseURL = 'http://production.com'
-// }
-// instance.defaults.baseURL = 'http://49.235.213.62:8081/'
-// 设置超时时间
 instance.defaults.timeout = 5000
 // post请求的请求头内需要设置的内容
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'

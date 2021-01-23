@@ -36,7 +36,7 @@
               </div>
             </template>
           </Card>
-          <Page></Page>
+          <Page :total="total"></Page>
         </div>
         <div class="card-container">
           <Introduction></Introduction>
@@ -64,13 +64,9 @@ export default {
       classifyCardW: '100%',
       classifyCardH: '100px',
       // 定义滚动条距离顶部的距离
-      top: 0
-      // 定义当前页码
-      // currentPage: 1,
-      // 定义每页有多少个元素
-      // pageSize: 5,
+      top: 0,
       // 定义总共有多少个元素
-      // total: 24
+      total: 1
     }
   },
   components: {
@@ -105,7 +101,6 @@ export default {
       // 设置让滚动条缓慢移动对应位置
       const height = this.$refs['header'].offsetHeight
       this.top = this.$refs['header'].scrollTop
-      console.log(height)
       const timer = setInterval(() => {
         const speed = (height - this.top) / 3
         if (this.top >= (height - 2)) {
@@ -114,12 +109,13 @@ export default {
         }
         this.top = this.top + speed
         this.$refs['header'].scrollTop = this.top
-        console.log(this.top)
       }, 30)
     },
     getBlogs () {
-      this.$axios.get('/test').then(res => {
-        this.blogs = res.data
+        this.$axios.get('/test').then(res => {
+        this.blogs = res.data.articles
+        this.total = parseInt(res.data.totalPage)
+        console.log('getBlogs:' + this.total)
       }).catch(error => {
         console.log(error)
       })
@@ -127,6 +123,7 @@ export default {
   },
   created () {
     this.getBlogs()
+    console.log('created:' + this.total)
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)

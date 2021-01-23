@@ -1,8 +1,8 @@
 <template>
   <div class="page">
     <div class="skipDiv">
-      <span id="pageSumLabel">共 40 页</span>
-      <span id="pageInput">跳转至<input id="skip" @keydown="doEnter" />页</span>
+      <span id="pageSumLabel">共 {{ total }} 页</span>
+      <span id="pageInput">跳转至<input class="skip" autocomplete="off" @keydown="doEnter" />页</span>
     </div>
     <ul class="page-ul">
     </ul>
@@ -12,19 +12,33 @@
 <script>
 export default {
   name: 'Page',
+  data () {
+    return {
+      totalPage: this.total,
+      pageSize: this.size,
+      currentPageIndex: this.currentPage
+    }
+  },
   props: {
-    totalPage: {
-      type: BigInt,
+    total: {
+      type: Number,
       default: 21
     },
-    pageSize: {
-      type: BigInt,
+    size: {
+      type: Number,
       default: 5
     },
-    currentPageIndex: {
-      type: BigInt,
+    currentPage: {
+      type: Number,
       default: 1
     }
+  },
+  watch: {
+    total (newTotal, oldTotal) {
+      this.totalPage = newTotal
+      this.paging(this.currentPageIndex, this.pageSize, this.totalPage)
+    }
+    // immediate: true
   },
   methods: {
     paging (currentPage, pageSize, total) {
@@ -78,7 +92,22 @@ export default {
     },
     doEnter (event) {
       if (event.keyCode === 13) {
-        alert('enter')
+        const obj  = document.getElementsByClassName('skip')[0]
+        const value = parseInt(document.getElementsByClassName('skip')[0].value)
+        if (value > this.totalPage) {
+          // 如果输入值过大，添加提示样式
+          obj.classList.add('validValue')
+          this.currentPageIndex =  this.totalPage
+        } else if (value <= 0) {
+          obj.classList.add('validValue')
+          this.currentPageIndex = 1
+        } else {
+          if (obj.classList.contains('validValue'))  {
+            obj.classList.remove(['validValue'])
+          }
+          this.currentPageIndex = value
+        }
+        this.paging(this.currentPageIndex, this.pageSize,  this.totalPage)
       }
     }
   },
@@ -137,7 +166,7 @@ export default {
     align-items: center;
     line-height: 25px;
   }
-  #skip{
+  .skip{
     outline: none;
     border: 1px solid #253f50;
     height: 25px;
@@ -150,11 +179,16 @@ export default {
   }
   #skip:focus{
     border: 1px solid #00a0ff;
+    transition: all 0.2s linear;
   }
   #pageSumLabel{
     margin-right: 15px;
   }
   #pageInput{
     margin-right: 10px;
+  }
+  .validValue{
+    border: 1px solid #e74c3c;
+    color: #e74c3c;
   }
 </style>

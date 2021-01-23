@@ -20,7 +20,7 @@ export default {
     }
   },
   components: {
-    'Header' : Header
+    'Header' : Header,
   },
   mounted () {
     let obj = document.getElementsByClassName('about')[0]

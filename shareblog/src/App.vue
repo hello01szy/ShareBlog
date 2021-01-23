@@ -18,24 +18,19 @@
     methods : {
       outerScroll (event) {
         this.top = event.target.scrollTop
-        console.log(this.top)
         this.eventTarget = event.target
         if (this.top >= 600) {
-          console.log(this.isShow)
           this.isShow = true
         } else {
-          console.log(this.isShow)
           this.isShow = false
         }
       },
       scollToTop () {
         let timer = setInterval(() => {
-          console.log(this.top)
           const speed = Math.floor(-this.top / 5)
           this.top = this.top + speed
           if (this.top <= 0) {
             this.top = 0
-            console.log(this.top)
             clearInterval(timer)
           }
           this.eventTarget.scrollTop = this.top

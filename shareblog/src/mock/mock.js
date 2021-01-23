@@ -11,7 +11,11 @@ const articlesData = () => {
     }
     articles.push(article)
   }
-  return articles
+  const result = {
+    'totalPage': 19,
+    'articles': articles
+  }
+  return result
 }
 
 const dropDownData = () => {
