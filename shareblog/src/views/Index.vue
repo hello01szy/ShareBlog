@@ -36,12 +36,8 @@
               </div>
             </template>
           </Card>
-          <div class="page">
-            <ul class="page-ul">
-            </ul>
-          </div>
+          <Page></Page>
         </div>
-        <!-- <div class="card"> -->
         <div class="card-container">
           <Introduction></Introduction>
         </div>
@@ -53,6 +49,7 @@
 import Header from '@/views/components/Header'
 import Card from '@/views/components/Card'
 import Introduction from '@/views/components/Introduction'
+import Page from '@/components/Page'
 export default {
   name: 'Index',
   data () {
@@ -79,7 +76,8 @@ export default {
   components: {
     Header,
     Card,
-    Introduction
+    Introduction,
+    Page
   },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
@@ -125,55 +123,6 @@ export default {
       }).catch(error => {
         console.log(error)
       })
-    },
-    paging (currentPage, pageSize, total) {
-      const pageElement = document.getElementsByClassName('page-ul')[0]
-      pageElement.innerHTML = ''
-      const backBtn = document.createElement('li')
-      backBtn.innerHTML = '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
-      backBtn.setAttribute('action', 'back')
-      backBtn.addEventListener('click', () => {
-        currentPage = currentPage - 1
-        this.paging(currentPage, pageSize, total)
-      })
-      if (currentPage === 1) {
-        backBtn.classList.add('disabled')
-      }
-      pageElement.appendChild(backBtn)
-      // 用来记录当页展示的个数是不是大于一页应显示的数据，如果大于则直接创建pagesize数量的页码，否则则要根据currentPage来创建第一个页码
-      let startPage = Math.floor((currentPage-1) / pageSize) * pageSize + 1
-      const count = total + 1 - startPage
-      let endPage = 0
-      if (count <= pageSize) {
-        startPage = total - pageSize + 1
-        endPage = total + 1
-      } else {
-        endPage = startPage + pageSize
-      }
-      for (let i = startPage; i < endPage; i++) {
-        const li = document.createElement('li')
-        li.innerText = i
-        if (currentPage === i) {
-          li.classList.add('selected')
-        }
-        li.setAttribute('action', i)
-        // 为每个li添加事件响应
-        li.addEventListener('click', () => {
-          currentPage = parseInt(li.getAttribute('action')) 
-          this.paging(currentPage, pageSize, total)
-        })
-        pageElement.appendChild(li)
-      }
-      const forwardBtn = document.createElement('li')
-      if (currentPage === total) {
-        forwardBtn.classList.add('disabled')
-      }
-      forwardBtn.innerHTML = '<i class="fa fa-angle-double-right" aria-hidden="true"></i>'
-      forwardBtn.addEventListener('click', () => {
-        currentPage = currentPage + 1
-        this.paging(currentPage, pageSize, total)
-      })
-      pageElement.appendChild(forwardBtn)
     }
   },
   created () {
@@ -181,7 +130,6 @@ export default {
   },
   mounted () {
     window.addEventListener('scroll', this.handleScroll, true)
-    this.paging(1, 5, 21)
   },
   destoryed () {
     window.removeEventListener('scroll', this.handleScroll)
@@ -373,42 +321,5 @@ export default {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
-  }
-  .page{
-    width: 100%;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .page-ul{
-    display: flex;
-    width: 50%;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    list-style: none;
-  }
-  .page-ul li{
-    list-style: none;
-    width: 6%;
-    height: 25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* background-color: red; */
-    transition: all 0.2s linear;
-  }
-  .page-ul li:hover{
-    background-color: aqua;
-    cursor: pointer;
-    color: #ffffff;
-  }
-  .disabled{
-    pointer-events: none;
-  }
-  .selected{
-    background-color: aqua;
-    color: #ffffff;
   }
 </style>

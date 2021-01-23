@@ -1,0 +1,160 @@
+<template>
+  <div class="page">
+    <div class="skipDiv">
+      <span id="pageSumLabel">共 40 页</span>
+      <span id="pageInput">跳转至<input id="skip" @keydown="doEnter" />页</span>
+    </div>
+    <ul class="page-ul">
+    </ul>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Page',
+  props: {
+    totalPage: {
+      type: BigInt,
+      default: 21
+    },
+    pageSize: {
+      type: BigInt,
+      default: 5
+    },
+    currentPageIndex: {
+      type: BigInt,
+      default: 1
+    }
+  },
+  methods: {
+    paging (currentPage, pageSize, total) {
+      const pageElement = document.getElementsByClassName('page-ul')[0]
+      pageElement.innerHTML = ''
+      const backBtn = document.createElement('li')
+      backBtn.innerHTML = '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'
+      backBtn.setAttribute('action', 'back')
+      backBtn.addEventListener('click', () => {
+        currentPage = currentPage - 1
+        this.paging(currentPage, pageSize, total)
+      })
+      if (currentPage === 1) {
+        backBtn.classList.add('disabled')
+      }
+      pageElement.appendChild(backBtn)
+      // 用来记录当页展示的个数是不是大于一页应显示的数据，如果大于则直接创建pagesize数量的页码，否则则要根据currentPage来创建第一个页码
+      let startPage = Math.floor((currentPage-1) / pageSize) * pageSize + 1
+      const count = total + 1 - startPage
+      let endPage = 0
+      if (count <= pageSize) {
+        startPage = total - pageSize + 1
+        endPage = total + 1
+      } else {
+        endPage = startPage + pageSize
+      }
+      for (let i = startPage; i < endPage; i++) {
+        const li = document.createElement('li')
+        li.innerText = i
+        if (currentPage === i) {
+          li.classList.add('selected')
+        }
+        li.setAttribute('action', i)
+        // 为每个li添加事件响应
+        li.addEventListener('click', () => {
+          currentPage = parseInt(li.getAttribute('action')) 
+          this.paging(currentPage, pageSize, total)
+        })
+        pageElement.appendChild(li)
+      }
+      const forwardBtn = document.createElement('li')
+      if (currentPage === total) {
+        forwardBtn.classList.add('disabled')
+      }
+      forwardBtn.innerHTML = '<i class="fa fa-angle-double-right" aria-hidden="true"></i>'
+      forwardBtn.addEventListener('click', () => {
+        currentPage = currentPage + 1
+        this.paging(currentPage, pageSize, total)
+      })
+      pageElement.appendChild(forwardBtn)
+    },
+    doEnter (event) {
+      if (event.keyCode === 13) {
+        alert('enter')
+      }
+    }
+  },
+  mounted () {
+    this.paging(this.currentPageIndex, this.pageSize, this.totalPage)
+  }
+}
+</script>
+
+<style>
+  .page{
+    width: 100%;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* -moz-user-select: none; */
+  }
+  .page-ul{
+    display: flex;
+    width: 50%;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    list-style: none;
+    -webkit-user-select: none;
+    /* -moz-user-select: none; */
+  }
+  .page-ul li{
+    list-style: none;
+    width: 6%;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: red; */
+    transition: all 0.2s linear;
+  }
+  .page-ul li:hover{
+    background-color: aqua;
+    cursor: pointer;
+    color: #ffffff;
+  }
+  .disabled{
+    pointer-events: none;
+  }
+  .selected{
+    background-color: aqua;
+    color: #ffffff;
+  }
+  .skipDiv{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    line-height: 25px;
+  }
+  #skip{
+    outline: none;
+    border: 1px solid #253f50;
+    height: 25px;
+    width: 30px;
+    padding-left: 4px;
+    border-radius: 2px;
+    margin-left: 4px;
+    margin-right: 4px;
+    color: #253f50;
+  }
+  #skip:focus{
+    border: 1px solid #00a0ff;
+  }
+  #pageSumLabel{
+    margin-right: 15px;
+  }
+  #pageInput{
+    margin-right: 10px;
+  }
+</style>
