@@ -1,5 +1,5 @@
 <template>
-  <button @click="follow" ref="mybtn" @mouseover="mouseOver" @mouseleave="mouseLeave" :style="{width:bwidth, height:bheight, backgroundColor: preBg}">
+  <button ref="mybtn" @mouseover="mouseOver" @mouseleave="mouseLeave" :style="{width:bwidth, height:bheight, backgroundColor: preBg}">
     <i :class="icon" aria-hidden="true" :style="{fontSize: iconSize, color: iconColor}"></i><slot><span :style="{fontSize:spanFontSize, color:spanFontColor}">Follow</span></slot>
   </button>
 </template>
@@ -36,18 +36,6 @@ export default {
     },
     mouseLeave (event) {
       this.$refs.mybtn.style.backgroundColor = this.preBg
-    },
-    follow () {
-      this.$axios.get('/test', {
-        params: {
-        }
-      }).then(res => {
-        console.log('success')
-        console.log(res)
-      }).catch(error => {
-        console.log('error')
-        console.log(error)
-      })
     }
   }
 }

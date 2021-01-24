@@ -1,6 +1,6 @@
 <template>
   <div class="header" ref="header">
-    <Header :childSticky="sticky" :childMenuDissipate="menuDissipate" :childDissipate="dissipate"></Header>
+    <Header :class="{headHide:isHeadHide, menumove: indexMenuMove}" @leaveWords = "showLoading"></Header>
     <div class="cover">
       <span id="title" :class="{ move: dissipate}">欢迎来到我的博客</span>
       <div id="saying" :class="{ move: dissipate}">
@@ -39,9 +39,10 @@
           <Page :total="total" @dopage="paging"></Page>
         </div>
         <div class="card-container">
-          <Introduction></Introduction>
+          <Introduction @goToGitHub="goToGitHub"></Introduction>
         </div>
     </div>
+    <Loading :hide="loadingShow"></Loading>
   </div>
 </template>
 
@@ -50,14 +51,15 @@ import Header from '@/views/components/Header'
 import Card from '@/views/components/Card'
 import Introduction from '@/views/components/Introduction'
 import Page from '@/components/Page'
+import Loading from '@/components/Loading.vue'
 export default {
   name: 'Index',
   data () {
     return {
       dissipate: false,
-      menuDissipate: false,
+      // menuDissipate: false,
       scrollTop: 0,
-      sticky: false,
+      sticky: true,
       // 定义博客列表
       blogs: [],
       // 定义分类卡片的宽度
@@ -70,7 +72,13 @@ export default {
       // 定义要展示的blog内容，是从blogs中获取的
       showBlogs: [],
       // 元素content的高度
-      contenetHeight: 0
+      contenetHeight: 0,
+      // 用来控制加载界面是否隐藏
+      loadingShow: true,
+      // 控制head是否隐藏
+      isHeadHide: false,
+      // 是否给header添加到顶部的特效
+      indexMenuMove: false
     }
   },
   computed: {
@@ -82,7 +90,8 @@ export default {
     Header,
     Card,
     Introduction,
-    Page
+    Page,
+    Loading
   },
   watch: {
     getVuexScrollTop () {
@@ -94,21 +103,21 @@ export default {
     handleScroll () {
       const delta = this.$store.state.delta
       this.scrollTop = this.$store.state.scrollTop
-      console.log(this.scrollTop)
       if (this.scrollTop !== 0) {
         this.dissipate = true
       } else {
         this.dissipate = false
       }
-      if (delta < 0 && this.scrollTop !== 0) {
-        this.sticky = true
-        this.menuDissipate = false
-      } else if (delta <= 0 && this.scrollTop === 0) {
-        this.sticky = false
-        this.menuDissipate = false
+      if (delta <= 0) {
+        this.isHeadHide = false
+        this.indexMenuMove = false
+        if (this.scrollTop === 0) {
+          this.indexMenuMove = true
+        }
       } else if (delta > 0) {
-        this.sticky = false
-        this.menuDissipate = true
+        this.isHeadHide = true
+        this.indexMenuMove = false
+        console.log(this.isHeadHide)
       }
     },
     // 点击向下图标，让滚动条向下滚动
@@ -128,7 +137,7 @@ export default {
       }, 30)
     },
     getBlogs () {
-        this.$axios.get('/test').then(res => {
+      this.$axios.get('/test').then(res => {
         this.blogs = res.data.articles
         this.total = Math.ceil(parseInt(res.data.articles.length) / 5)
       }).catch(error => {
@@ -136,12 +145,25 @@ export default {
       })
     },
     paging (currentPage, pageSize) {
-      let startIndex = (currentPage - 1) * pageSize
+      const startIndex = (currentPage - 1) * pageSize
       let endIndex = startIndex + pageSize
       if (endIndex > this.blogs.length) {
         endIndex = this.blogs.length
       }
       this.showBlogs = this.blogs.slice(startIndex, endIndex)
+    },
+    showLoading () {
+      this.loadingShow = false
+      // 设置窗口不能滚动
+      const head = document.getElementsByClassName('header')[0]
+      head.style.overflowY = 'hidden'
+      setTimeout(() => {
+        this.loadingShow = true
+        head.style.overflowY = 'scroll'
+      }, 3000)
+    },
+    goToGitHub () {
+
     }
   },
   created () {
@@ -323,6 +345,9 @@ export default {
   h2{
     cursor: pointer;
   }
+  .headHide{
+    opacity: 0;
+  }
   .article-content{
     width: 92%;
     height: 7.5em;
@@ -341,5 +366,16 @@ export default {
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 5;
+  }
+  .menumove{
+    animation: show-then-hide 0.5s linear;
+  }
+  @keyframes show-then-hide{
+    from{
+      background-color: rgb(30, 30, 30);
+    }
+    to{
+      background-color:  transparent;
+    }
   }
 </style>
