@@ -23,7 +23,7 @@ export default {
 
 <style>
   .menu{
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 0px;
     z-index: 200;

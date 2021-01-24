@@ -68,7 +68,14 @@ export default {
       // 定义总共有多少个元素
       total: -1,
       // 定义要展示的blog内容，是从blogs中获取的
-      showBlogs: []
+      showBlogs: [],
+      // 元素content的高度
+      contenetHeight: 0
+    }
+  },
+  computed: {
+    getVuexScrollTop () {
+      return this.$store.state.scrollTop
     }
   },
   components: {
@@ -77,11 +84,17 @@ export default {
     Introduction,
     Page
   },
+  watch: {
+    getVuexScrollTop () {
+      this.handleScroll()
+    }
+  },
   methods: {
     // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
-    handleScroll (event) {
-      const delta = event.target.scrollTop - this.scrollTop
-      this.scrollTop = event.target.scrollTop
+    handleScroll () {
+      const delta = this.$store.state.delta
+      this.scrollTop = this.$store.state.scrollTop
+      console.log(this.scrollTop)
       if (this.scrollTop !== 0) {
         this.dissipate = true
       } else {
@@ -90,7 +103,7 @@ export default {
       if (delta < 0 && this.scrollTop !== 0) {
         this.sticky = true
         this.menuDissipate = false
-      } else if (delta < 0 && this.scrollTop === 0) {
+      } else if (delta <= 0 && this.scrollTop === 0) {
         this.sticky = false
         this.menuDissipate = false
       } else if (delta > 0) {
@@ -100,8 +113,9 @@ export default {
     },
     // 点击向下图标，让滚动条向下滚动
     dropdown () {
+      console.log('dropdown')
       // 设置让滚动条缓慢移动对应位置
-      const height = this.$refs['header'].offsetHeight
+      const height = this.$refs['header'].offsetHeight + 35
       this.top = this.$refs['header'].scrollTop
       const timer = setInterval(() => {
         const speed = (height - this.top) / 3
@@ -117,20 +131,16 @@ export default {
         this.$axios.get('/test').then(res => {
         this.blogs = res.data.articles
         this.total = Math.ceil(parseInt(res.data.articles.length) / 5)
-        console.log('getBlogs:' + this.total)
       }).catch(error => {
         console.log(error)
       })
     },
     paging (currentPage, pageSize) {
-      console.log(this.blogs)
       let startIndex = (currentPage - 1) * pageSize
       let endIndex = startIndex + pageSize
       if (endIndex > this.blogs.length) {
         endIndex = this.blogs.length
       }
-      console.log('start:' + startIndex)
-      console.log('end:' + endIndex)
       this.showBlogs = this.blogs.slice(startIndex, endIndex)
     }
   },
@@ -139,10 +149,10 @@ export default {
     console.log('created:' + this.total)
   },
   mounted () {
-    window.addEventListener('scroll', this.handleScroll, true)
+    // window.addEventListener('scroll', this.handleScroll, true)
   },
   destoryed () {
-    window.removeEventListener('scroll', this.handleScroll)
+    // window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
@@ -150,7 +160,7 @@ export default {
   .header {
     width: 100vw;
     height: 100vh;
-    background-image: url('~@/assets/animal.jpg');
+    background-image: url('~@/assets/header.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 100%;
@@ -161,7 +171,6 @@ export default {
   .cover{
     width:100%;
     height:100%;
-    background: rgba(27, 22, 22, 0.3);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -205,7 +214,7 @@ export default {
   }
   .down{
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     transform: scale(0.4);
     animation: up-then-down 1s linear infinite;
     cursor: pointer;
@@ -220,15 +229,15 @@ export default {
   }
   @keyframes up-then-down {
     0%{
-      bottom: 20px;
+      bottom: 50px;
       opacity: 1;
     }
     50%{
-      bottom: 10px;
+      bottom: 40px;
       opacity: 0.5;
     }
     100%{
-      bottom: 0px;
+      bottom: 30px;
       opacity: 0;
     }
   }
@@ -240,7 +249,7 @@ export default {
     background-size: 10%;
     position: relative;
     overflow: hidden;
-    min-height: 968px;
+    min-height: 950px;
   }
   .blogs{
     width: 57%;

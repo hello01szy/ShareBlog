@@ -17,8 +17,14 @@
     },
     methods : {
       outerScroll (event) {
+        const delta = event.target.scrollTop - this.top
         this.top = event.target.scrollTop
         this.eventTarget = event.target
+        const scrollData = {
+          'delta': delta,
+          'top': this.top
+        }
+        this.$store.commit('changeScrollTop', scrollData)
         if (this.top >= 600) {
           this.isShow = true
         } else {
