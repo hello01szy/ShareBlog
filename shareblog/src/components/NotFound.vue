@@ -1,14 +1,15 @@
 <template>
   <div class="container404">
     <div class="space404">
-      <img src="~@/assets/space.png" alt="">    
+      <img src="~@/assets/space.png" class="img404" speed="3" alt="">    
     </div>
     <div class="top404">
       <div class="title">404 NOT FOUND</div>
-      <img src="~@/assets/human.png" alt="">
+      <span id="desc">您想找的页面丢失了......</span>
+      <img src="~@/assets/human.png" class="img404" speed="1" alt="">
       <div class="backToHome">
-        <span>返回首页</span>
-        <span>刷新页面</span>
+        <span @click="backToHome404">返回首页</span>
+        <span @click="refresh404">刷新页面</span>
       </div>
     </div>
   </div>
@@ -16,7 +17,32 @@
 
 <script>
 export default {
-  name: 'Lost'
+  name: 'Lost',
+  inject: ['reload'],
+  methods: {
+    move (e) {
+      document.getElementsByClassName('img404').forEach(element => {
+        const speed = element.getAttribute('speed')
+        const x  = (window.innerWidth - e.pageX * speed) / 400
+        const y = (window.innerHeight - e.pageY * speed) / 400
+        element.style.transform = `translateX(${x}px) translateY(${y}px)`
+      })
+    },
+    // 返回至首页
+    backToHome404 () {
+      this.$router.push('/')
+    },
+    // 刷新页面
+    refresh404 () {
+      this.reload()
+    }
+  },
+  created () {
+    window.addEventListener('mousemove', this.move, true)
+  },
+  destroyed () {
+    window.removeEventListener('mousemove', this.move)
+  }
 }
 </script>
 
@@ -27,10 +53,16 @@ export default {
   position: relative;
   overflow: hidden;
 }
+.space404{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .space404 img{
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  margin-top: -1%;
 }
 .top404 .title{
   position: absolute;
@@ -38,7 +70,14 @@ export default {
   color: aliceblue;
   font-size: 2em;
   font-weight: bolder;
-
+  letter-spacing: 3px;
+}
+#desc{
+  position: absolute;
+  top: 20%;
+  color: aliceblue;
+  font-size: 0.8em;
+  letter-spacing: 4px;
 }
 .top404 img{
   position: absolute;

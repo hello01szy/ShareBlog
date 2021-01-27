@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view v-if="refresh"/>
     <div :class="{'back-to-top':true, 'show':isShow }" @click="scollToTop">
       <i id="up" class="fa fa-angle-double-up" aria-hidden="true"></i>
     </div>
@@ -12,7 +12,8 @@
       return {
         isShow: false,
         top: 0,
-        eventTarget: Object
+        eventTarget: Object,
+        refresh: true
       }
     },
     methods : {
@@ -41,6 +42,19 @@
           }
           this.eventTarget.scrollTop = this.top
         }, 30)
+      },
+      // 页面刷新方法
+      reload () {
+        console.log('reload')
+        this.refresh = false
+        this.$nextTick( function () {
+          this.refresh = true
+        })
+      }
+    },
+    provide () {
+      return {
+        reload: this.reload
       }
     },
     mounted () {
