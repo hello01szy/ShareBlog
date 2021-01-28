@@ -20,6 +20,11 @@ const routes = [
     path: '/lost',
     name: 'lost',
     component: () => import('@/components/NotFound.vue')
+  },
+  {
+    path: '/editor',
+    name: 'editor',
+    component: () => import('@/components/Editor')
   }
 ]
 

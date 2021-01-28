@@ -6,7 +6,7 @@
     <div class="top404">
       <div class="title">404 NOT FOUND</div>
       <span id="desc">您想找的页面丢失了......</span>
-      <img src="~@/assets/human.png" class="img404" speed="1" alt="">
+      <img src="~@/assets/human.png" class="img404" speed="2" alt="">
       <div class="backToHome">
         <span @click="backToHome404">返回首页</span>
         <span @click="refresh404">刷新页面</span>

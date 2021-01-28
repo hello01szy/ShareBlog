@@ -23,7 +23,7 @@ export default {
     height: 100vh;
     background-color: #f5f6fa;
     opacity: 0.8;
-    position: absolute;
+    position: fixed;
     display: flex;
     top: 0px;
     left: 0px;
