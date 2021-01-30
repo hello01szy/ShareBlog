@@ -25,6 +25,11 @@ const routes = [
     path: '/editor',
     name: 'editor',
     component: () => import('@/components/Editor')
+  },
+  {
+    path: '/blog',
+    name: 'blog',
+    component: () => import('@/views/Blog')
   }
 ]
 

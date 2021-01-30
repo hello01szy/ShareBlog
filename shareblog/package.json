@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "element-ui": "^2.14.1",
     "font-awesome": "^4.7.0",
+    "marked": "^1.2.8",
     "mavon-editor": "^2.9.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
