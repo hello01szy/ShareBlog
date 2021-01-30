@@ -3,15 +3,15 @@
     <div class="blogheader">
       <Header></Header>
       <div class="blogheadercover">
-        <h1>Hello My Blog</h1>
-        <h4>This is his first blog</h4>
+        <h2>{{ blog.title }}</h2>
+        <span>{{ blog.tag }} | {{ blog.publish }}</span>
       </div>
     </div>
     <div class="blogbody">
       <div class="blogContainer">
-        <Card>
+        <Card :childHeight="blogCardHeight" class="blog-card">
           <template v-slot:blog>
-            <div v-html="convertToHtml" style="width: 90%; height: 90%;">
+            <div v-html="blog.content" class="mdStyle">
             </div>
           </template>
         </Card>
@@ -34,22 +34,22 @@ export default {
   },
   data () {
     return {
-      'blog': '### Hello How are **you**'
+      blog: Object,
+      blogCardHeight: 'auto'
     }
   },
-  computed: {
-    convertToHtml () {
-      this.blog = marked(this.blog)
-      console.log(this.blog)
-      return this.blog
-    }
+  created () {
+    this.$axios.get('/blog').then( res => {
+      this.blog = res.data
+    }).catch(error => {
+      this.$message.info(error)
+    })
   },
-  mounted () {
-    const link = document.createElement('link')
-    link.type = 'text/css'
-    link.rel = 'stylesheet'
-    link.href = 'https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css'
-    document.head.appendChild(link)
+  watch: {
+    blog (val) {
+      this.blog = val
+      this.blog.content = marked(this.blog.content)
+    }
   }
 }
 </script>
@@ -82,7 +82,7 @@ export default {
   z-index: 0;
   justify-content: center;
 }
-.blogheadercover h1, h4{
+.blogheadercover h2, span{
   color: white;
 }
 .blogContainer{
@@ -95,13 +95,24 @@ export default {
 }
 .blogbody{
   width: 100%;
-  height: 55%;
+  height: auto;
   display: flex;
   flex-direction: row;
   align-items: center;
+  background-color: rgba(0, 0, 0, 0.1)
 }
 .blogSideIntroduction{
   width: 25%;
   height: 100%;
+}
+.mdStyle{
+  width: 100%;
+  line-height: 30px;
+  font-size: 0.8em;
+  word-wrap: break-word;
+  text-align: left;
+  padding-top: 3%;
+  padding-right: 3%;
+  padding-left: 3%;
 }
 </style>
