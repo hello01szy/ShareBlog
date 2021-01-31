@@ -30,6 +30,10 @@ const routes = [
     path: '/blog',
     name: 'blog',
     component: () => import('@/views/Blog')
+  },
+  {
+    path: '*',
+    redirect: '/lost'  
   }
 ]
 
