@@ -17,7 +17,16 @@
         </Card>
       </div>
       <div class="blogSideContent">
-        <Card></Card>
+        <Card class="cardStyle">
+          <template v-slot:blog>
+            <div v-for="(item, index) in navList" :key="index" class="content">
+              <span>{{ item.title }}</span>
+              <ul>
+                <li v-for="(ele, eleIndex) in item.children" :key="eleIndex">{{ ele.title }}</li>
+              </ul>
+            </div>
+          </template>
+        </Card>
       </div>
     </div>
   </div>
@@ -48,6 +57,8 @@ export default {
     return {
       blog: Object,
       blogCardHeight: 'auto',
+      mdStr: String,
+      navList: []
       // 在此处可以设置传过来的图片的IP地址，并通过:style="{backgroundImage: 'url(' + bgImageUrl + ')'}"设置背景
       // bgImageUrl: 'https://picsum.photos/200/300'
     }
@@ -58,6 +69,7 @@ export default {
       let str = dateStr.substring(0,4) + '年' + dateStr.substring(4, 6) + '月' + dateStr.substring(6, 8) + '日'
       return str
     },
+    // 从marddown字符串中获取到h1和h2的标题
     getTitle(content) {
       let nav = [];
       let tempArr = [];
@@ -77,38 +89,87 @@ export default {
         item.index = index++
         return item
       })
+    },
+    // 将1,2级标题处理为树状结构
+    handleNavTree () {
+      let navs = this.getTitle(this.mdStr)
+      let navLevel = [1, 2]
+      let retNavs = []
+      let toAppendNavList
+      navLevel.forEach(level => {
+        toAppendNavList = this.find(navs, {
+          level: level
+        })
+        if (retNavs.length === 0) {
+          retNavs = retNavs.concat(toAppendNavList)
+          console.log(retNavs)
+        } else {
+          toAppendNavList.forEach(item => {
+            let parentNavIndex = this.getParentIndex(navs, item.index)
+            this.appendToParentNav(retNavs, parentNavIndex, item)
+          })
+        }
+      })
+      return retNavs
+    },
+    appendToParentNav (nav, parentIndex, newNav) {
+      let index = this.findIndex(nav, parentIndex)
+      nav[index].children = nav[index].children.concat(newNav)
+    },
+    findIndex (attr, parentIndex) {
+      let ret
+      attr.forEach((item, index) => {
+        if (item.index === parentIndex) {
+          ret = index
+        }
+      })
+      return ret
+    },
+    find (attr, condition) {
+      return attr.filter(item => {
+        for (let key in condition) {
+          if (condition.hasOwnProperty(key) && condition[key] !== item[key]) {
+            // 如果level不同则返回false
+            return false
+          }
+        }
+        return true
+      })
+    },
+    getParentIndex (nav, endIndex) {
+      for (let i = endIndex - 1; i >= 0; i--) {
+        if (nav[endIndex].level > nav[i].level) {
+          console.log(nav[i].index)
+          return nav[i].index
+        }
+      }
     }
   },
   created () {
     this.$axios.get('/blog').then(res => {
       this.blog = res.data
       this.blog.publish = this.convertToDateStr(this.blog.publish)
+      this.mdStr = this.blog.content
+      let index = 0;
+      renderMd.heading = function(text, level) {
+        if (level <= 2) {
+            return `<h${level} id="data-${index++}">${text}</h${level}>`;
+        } else {
+            return `<h${level}>${text}</h${level}>`;
+        }
+      };
+      renderMd.code = function(code, language) {  
+        code = code.replace(/\r\n/g,"<br>")
+        code = code.replace(/\n/g,"<br>");
+        return `<div class="text">${code}</div>`;
+      };
+      this.blog.content = marked(this.blog.content)
+      this.navList = this.handleNavTree()
     }).catch(error => {
       this.$message.info(error)
     })
   },
   mounted () {
-  },
-  watch: {
-    blog (val) {
-      this.blog = val
-      let index = 0;
-      renderMd.heading = function(text, level) {
-          if (level <= 2) {
-              return `<h${level} id="data-${index++}">${text}</h${level}>`;
-          } else {
-              return `<h${level}>${text}</h${level}>`;
-          }
-      };
-      renderMd.code = function(code, language) {  
-          code = code.replace(/\r\n/g,"<br>")
-          code = code.replace(/\n/g,"<br>");
-          return `<div class="text">${code}</div>`;
-      };
-      this.blog.content = marked(this.blog.content)
-      console.log(this.blog.content)
-      console.log(this.getTitle(this.blog.content))
-    }
   }
 }
 </script>
@@ -182,5 +243,29 @@ export default {
   padding-top: 3%;
   padding-right: 3%;
   padding-left: 3%;
+}
+.child{
+  padding-left: 5px;
+}
+.content{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: blue;
+}
+.content ul{
+  list-style: none;
+  text-align: left;
+}
+.cardStyle{
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
