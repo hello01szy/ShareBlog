@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view v-if="refresh"/>
+    <keep-alive>
+      <router-view v-if="refresh"/>
+    </keep-alive>
     <div :class="{'back-to-top':true, 'show':isShow }" @click="scollToTop">
       <i id="up" class="fa fa-angle-double-up" aria-hidden="true"></i>
     </div>
