@@ -48,7 +48,7 @@ export default {
     background-color:#353b48;
     outline: none;
     border: none;
-    transition: all 0.5s ease-in-out;
+    transition: all 0.3s ease-in-out;
     border-radius: 3px;
     display: flex;
     flex-direction: row;

@@ -17,10 +17,13 @@
         </Card>
       </div>
       <div class="blogSideContent">
-        <Card class="cardStyle">
+        <Card :childHeight="blogCardHeight" class="cardStyle">
           <template v-slot:blog>
+            <div class="topTitle">
+              <span>目录</span>
+            </div>
             <div v-for="(item, index) in navList" :key="index" class="content">
-              <span>{{ item.title }}</span>
+              <span class="content-title">{{ item.title }}</span>
               <ul>
                 <li v-for="(ele, eleIndex) in item.children" :key="eleIndex">{{ ele.title }}</li>
               </ul>
@@ -178,6 +181,7 @@ export default {
 .blogPage{
   width: 100%;
   height: 100vh;
+  -webkit-user-select: none;
 }
 .blogheader{
   width: 100%;
@@ -249,23 +253,67 @@ export default {
 }
 .content{
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
-  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  background-color: blue;
+  cursor: pointer;
+}
+.content:first-child{
+  margin-top: 5px;
 }
 .content ul{
   list-style: none;
   text-align: left;
+  box-sizing: border-box;
+  padding-left: 2em;
+  width: 100%;
+}
+.content ul li{
+  width: 90%;
+  height: 1.8em;
+  line-height: 1.8em;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+.content ul li:hover{
+  background-color: cornflowerblue;
+  color: aliceblue;
 }
 .cardStyle{
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
   align-items: center;
+}
+.content-title{
+  width: 95%;
+  color: #253f50;
+  text-align: left;
+  padding-left: 10px;
+  line-height: 2.0em;
+  font-weight: 540;
+  transition: all 0.3s linear;
+}
+.content-title:hover{
+  background-color: cornflowerblue;
+  color: white;
+}
+.topTitle{
+  width: 100%;
+  height: 40px;
+  margin-top: 5px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+.topTitle span{
+  color: #253f50;
+  line-height: 40px;
+  margin-left: 4px;
+  font-size: 1.4em;
 }
 </style>
