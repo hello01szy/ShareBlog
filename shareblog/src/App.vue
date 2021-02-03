@@ -29,7 +29,9 @@
         }
         this.$store.commit('changeScrollTop', scrollData)
         if (this.top >= 600) {
-          this.isShow = true
+          if (this.$route.path === '/') {
+            this.isShow = true
+          }
         } else {
           this.isShow = false
         }
@@ -97,8 +99,10 @@
   justify-content: center;
   align-items: center;
   transition: all 0.2s linear;
+  pointer-events: none;
 }
 .show{
   opacity: 1;
+  pointer-events: all;
 }
 </style>

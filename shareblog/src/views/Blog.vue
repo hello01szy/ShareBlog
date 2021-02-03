@@ -16,16 +16,16 @@
           </template>
         </Card>
       </div>
-      <div class="blogSideContent">
+      <div class="blogSideContent" ref="blogContent">
         <Card :childHeight="blogCardHeight" class="cardStyle">
           <template v-slot:blog>
             <div class="topTitle">
               <span>目录</span>
             </div>
             <div v-for="(item, index) in navList" :key="index" class="content">
-              <span class="content-title">{{ item.title }}</span>
+              <span class="content-title" @click="clickContentSpan(index)">{{ item.title }}</span>
               <ul>
-                <li v-for="(ele, eleIndex) in item.children" :key="eleIndex">{{ ele.title }}</li>
+                <li v-for="(ele, eleIndex) in item.children" :key="eleIndex" @click="clickContentLi(eleIndex)">{{ ele.title }}</li>
               </ul>
             </div>
           </template>
@@ -67,6 +67,14 @@ export default {
     }
   },
   methods: {
+    clickContentLi (index) {
+      this.$message('' + index)
+    },
+    // 处理点击事件
+    clickContentSpan (index) {
+      // this.$message('' + index)
+      this.handleBlogPage()
+    },
     // 将8位字符串转换为日期字符串
     convertToDateStr (dateStr) {
       let str = dateStr.substring(0,4) + '年' + dateStr.substring(4, 6) + '月' + dateStr.substring(6, 8) + '日'
@@ -146,9 +154,15 @@ export default {
           return nav[i].index
         }
       }
+    },
+    handleBlogPage (event) {
+      // document.getElementsByTagName('h1')[0].scrollIntoView
+      // console.log(event.target.scrollTop)
+      console.log(document.documentElement.scrollTop)
     }
   },
   created () {
+    window.addEventListener('scroll', this.handleBlogPage, true)
     this.$axios.get('/blog').then(res => {
       this.blog = res.data
       this.blog.publish = this.convertToDateStr(this.blog.publish)
@@ -169,10 +183,13 @@ export default {
       this.blog.content = marked(this.blog.content)
       this.navList = this.handleNavTree()
     }).catch(error => {
-      this.$message.info(error)
+      this.$message(error + '')
     })
   },
   mounted () {
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.handleBlogPage)
   }
 }
 </script>
@@ -230,6 +247,7 @@ export default {
   height: auto;
   display: flex;
   flex-direction: row;
+  position: relative;
   /* align-items: center; */
   background-color: rgba(0, 0, 0, 0.1)
 }
@@ -237,6 +255,8 @@ export default {
   width: 25%;
   height: 100%;
   padding-top: 3%;
+  top: 0%;
+  position: sticky;
 }
 .mdStyle{
   width: 100%;
