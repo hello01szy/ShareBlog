@@ -23,9 +23,9 @@
               <span>目录</span>
             </div>
             <div v-for="(item, index) in navList" :key="index" class="content">
-              <span class="content-title" @click="clickContentSpan(index)">{{ item.title }}</span>
+              <span class="content-title" @click="clickContentSpan(index, 0)">{{ item.title }}</span>
               <ul>
-                <li v-for="(ele, eleIndex) in item.children" :key="eleIndex" @click="clickContentLi(eleIndex)">{{ ele.title }}</li>
+                <li v-for="(ele, eleIndex) in item.children" :key="eleIndex" @click="clickContentLi(index, eleIndex)">{{ ele.title }}</li>
               </ul>
             </div>
           </template>
@@ -67,13 +67,27 @@ export default {
     }
   },
   methods: {
-    clickContentLi (index) {
+    clickContentLi (index, eleIndex) {
       this.$message('' + index)
     },
     // 处理点击事件
     clickContentSpan (index) {
-      // this.$message('' + index)
-      this.handleBlogPage()
+      let dataIndex = 0
+      if (index > 0) {
+        dataIndex = this.navList[index - 1].children.length + 1
+      }
+      // 页面的总高度
+      const totalHeight = document.getElementsByClassName('blogPage')[0].scrollHeight
+      // 视图高度
+      const viewHeight = document.body.scrollHeight
+      // 获取占比
+      const ratio = (totalHeight / viewHeight).toFixed(2)
+      // 要滚动的高度
+      const scrollH = document.getElementById(`data-${dataIndex}`).offsetTop + document.getElementsByClassName('blogheader')[0].scrollHeight - 100
+      //滚动条要滚动的高度
+      const scrollBar = parseInt(scrollH / ratio)
+
+      document.getElementsByClassName('blogPage')[0].scrollTop = scrollBar
     },
     // 将8位字符串转换为日期字符串
     convertToDateStr (dateStr) {
@@ -91,8 +105,8 @@ export default {
             title: title.replace(/^#+/, '').replace(/\([^)]*?\)/, ''),
             level: level,
             children: [],
-        });
-      });
+        })
+      })
       // 对1,2级别标题进行处理
       nav = tempArr.filter(item => item.level <= 2)
       let index = 0
@@ -139,7 +153,7 @@ export default {
     find (attr, condition) {
       return attr.filter(item => {
         for (let key in condition) {
-          if (condition.hasOwnProperty(key) && condition[key] !== item[key]) {
+          if (condition[key] !== item[key]) {
             // 如果level不同则返回false
             return false
           }
@@ -154,32 +168,26 @@ export default {
           return nav[i].index
         }
       }
-    },
-    handleBlogPage (event) {
-      // document.getElementsByTagName('h1')[0].scrollIntoView
-      // console.log(event.target.scrollTop)
-      console.log(document.documentElement.scrollTop)
     }
   },
   created () {
-    window.addEventListener('scroll', this.handleBlogPage, true)
     this.$axios.get('/blog').then(res => {
       this.blog = res.data
       this.blog.publish = this.convertToDateStr(this.blog.publish)
       this.mdStr = this.blog.content
-      let index = 0;
-      renderMd.heading = function(text, level) {
+      let index = 0
+      renderMd.heading = function (text, level) {
         if (level <= 2) {
-            return `<h${level} id="data-${index++}">${text}</h${level}>`;
+          return `<h${level} id="data-${index++}">${text}</h${level}>`
         } else {
-            return `<h${level}>${text}</h${level}>`;
+          return `<h${level}>${text}</h${level}>`
         }
-      };
-      renderMd.code = function(code, language) {  
-        code = code.replace(/\r\n/g,"<br>")
-        code = code.replace(/\n/g,"<br>");
-        return `<div class="text">${code}</div>`;
-      };
+      }
+      renderMd.code = function (code, language) {
+        code = code.replace(/\r\n/g, '<br>')
+        code = code.replace(/\n/g, '<br>')
+        return `<div class='text'>${code}</div>`
+      }
       this.blog.content = marked(this.blog.content)
       this.navList = this.handleNavTree()
     }).catch(error => {
@@ -187,9 +195,6 @@ export default {
     })
   },
   mounted () {
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.handleBlogPage)
   }
 }
 </script>
@@ -198,6 +203,7 @@ export default {
 .blogPage{
   width: 100%;
   height: 100vh;
+  overflow: scroll;
   -webkit-user-select: none;
 }
 .blogheader{
