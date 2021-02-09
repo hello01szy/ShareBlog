@@ -21,11 +21,18 @@ export default {
   inject: ['reload'],
   methods: {
     move (e) {
-      document.getElementsByClassName('img404').forEach(element => {
+      document.getElementsByClassName('img404').forEach((element, index) => {
         const speed = element.getAttribute('speed')
-        const x  = (window.innerWidth - e.pageX * speed) / 400
-        const y = (window.innerHeight - e.pageY * speed) / 400
-        element.style.transform = `translateX(${x}px) translateY(${y}px)`
+        if (index === 0) {
+          const x  = (window.innerWidth - e.pageX * speed) / 200
+          const y = (window.innerHeight - e.pageY * speed) / 200
+          element.style.transform = `translateX(${x}px) translateY(${y}px)`
+        } else {
+          const x  = (window.innerWidth + e.pageX * speed) / 300
+          const y = (window.innerHeight + e.pageY * speed) / 300
+          element.style.transform = `translateX(${x}px) translateY(${y}px)`
+        }
+        
       })
     },
     // 返回至首页

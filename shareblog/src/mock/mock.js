@@ -3,7 +3,7 @@ const random = Mock.Random
 
 const articlesData = () => {
   const articles = []
-  for (let i = 0; i < 19; i++) {
+  for (let i = 0; i < 25; i++) {
     const article = {
       'id': i,
       'title': random.ctitle(),
@@ -44,6 +44,16 @@ const blogData = () => {
   return blog;
 }
 
+const result = () => {
+  const data = []
+  for (let i = 0; i < 5; i++) {
+    data.push(random.ctitle())    
+  }
+  return data;
+}
+
+
 Mock.mock('/test', 'get', articlesData)
 Mock.mock('/tag', 'get', dropDownData)
 Mock.mock('/blog', 'get', blogData)
+Mock.mock('/search', 'post', result)

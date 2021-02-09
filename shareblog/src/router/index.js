@@ -32,8 +32,13 @@ const routes = [
     component: () => import('@/views/Blog')
   },
   {
+    path: '/search',
+    name: 'search',
+    component: () => import('@/components/Search')
+  },
+  {
     path: '*',
-    redirect: '/lost'  
+    redirect: '/lost'
   }
 ]
 

@@ -68,7 +68,17 @@ export default {
   },
   methods: {
     clickContentLi (index, eleIndex) {
-      this.$message('' + index)
+      // 用来计算自己是第几个li
+      let items = 0
+      for (let i = 0; i < index; i++) {
+        items = items + this.navList[i].children.length
+      }
+      // 将父级标题算在内
+      items = items + index
+      // 将自己算进来
+      items = items + eleIndex + 1
+      // this.$message(`data-${items}`)
+      this.triggerScroll(items)
     },
     // 处理点击事件
     clickContentSpan (index) {
@@ -76,6 +86,10 @@ export default {
       if (index > 0) {
         dataIndex = this.navList[index - 1].children.length + 1
       }
+      this.triggerScroll(dataIndex)
+    },
+    // 滚动条滚动方法
+    triggerScroll (index) {
       // 页面的总高度
       const totalHeight = document.getElementsByClassName('blogPage')[0].scrollHeight
       // 视图高度
@@ -83,11 +97,32 @@ export default {
       // 获取占比
       const ratio = (totalHeight / viewHeight).toFixed(2)
       // 要滚动的高度
-      const scrollH = document.getElementById(`data-${dataIndex}`).offsetTop + document.getElementsByClassName('blogheader')[0].scrollHeight - 100
+      const scrollH = document.getElementById(`data-${index}`).offsetTop + document.getElementsByClassName('blogheader')[0].scrollHeight
+      // 本身的scrollTop
+      let top = document.getElementsByClassName('blogPage')[0].scrollTop
       //滚动条要滚动的高度
-      const scrollBar = parseInt(scrollH / ratio)
-
-      document.getElementsByClassName('blogPage')[0].scrollTop = scrollBar
+      let scrollBar = parseInt(scrollH / ratio)
+      
+      // 如果需要滚动的高度 < scrollTop
+      if (scrollBar < top) {
+        let timer = setInterval(() => {
+          if (document.getElementsByClassName('blogPage')[0].scrollTop - 50 <= scrollBar) {
+            document.getElementsByClassName('blogPage')[0].scrollTop = scrollBar
+            clearInterval(timer)
+          } else {
+            document.getElementsByClassName('blogPage')[0].scrollTop = document.getElementsByClassName('blogPage')[0].scrollTop - 50
+          }
+        }, 30) 
+      }  else {
+        let timer = setInterval(() => {
+          if (document.getElementsByClassName('blogPage')[0].scrollTop + 50 >= scrollBar) {
+            document.getElementsByClassName('blogPage')[0].scrollTop = scrollBar
+            clearInterval(timer)
+          } else {
+            document.getElementsByClassName('blogPage')[0].scrollTop = document.getElementsByClassName('blogPage')[0].scrollTop + 50
+          }
+        }, 30) 
+      }
     },
     // 将8位字符串转换为日期字符串
     convertToDateStr (dateStr) {
@@ -302,6 +337,7 @@ export default {
   line-height: 1.8em;
   font-size: 0.9em;
   cursor: pointer;
+  transition: all 0.2s linear;
 }
 .content ul li:hover{
   background-color: cornflowerblue;
