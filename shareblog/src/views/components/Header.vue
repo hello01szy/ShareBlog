@@ -1,22 +1,26 @@
 <template>
   <div class="menu">
-    <div class="menuItem"><i class="fa fa-search" aria-hidden="true"> 搜索</i></div>
+    <div class="menuItem"><SearchBtn></SearchBtn></div>
     <div class="menuItem"><router-link to="/"><i style="font: size 1.2em;" class="fa fa-home" aria-hidden="true"> 首页</i></router-link></div>
     <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"> 文章</i></div>
     <div class="menuItem"><i class="fa fa-wrench" aria-hidden="true"> 工具</i></div>
-    <div class="menuItem"><i class="fa fa-link" aria-hidden="true"> 链接</i></div>
+    <div class="menuItem"><router-link to="/links"><i class="fa fa-link" aria-hidden="true"> 链接</i></router-link></div>
     <div class="menuItem" @click="leaveWords"><i class="fa fa-comments-o" aria-hidden="true"> 留言板</i> </div>
     <div class="menuItem"><router-link to="/about"><i class="fa fa-info" aria-hidden="true"> 关于</i></router-link></div>
   </div>
 </template>
 
 <script>
+import SearchBtn from '@/components/Search'
 export default {
   name: 'Header',
   methods: {
     leaveWords () {
       this.$emit('leaveWords')
     }
+  },
+  components: {
+    'SearchBtn': SearchBtn
   }
 }
 </script>
