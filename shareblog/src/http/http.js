@@ -12,7 +12,6 @@ instance.interceptors.request.use((param) => {
   } else {
     console.log(param.method)
   }
-  debugger
   return param
 }, (error) => {
   console.log('参数错误')

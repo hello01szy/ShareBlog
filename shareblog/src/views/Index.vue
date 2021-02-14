@@ -24,7 +24,7 @@
             <template v-slot:blog>
               <div class="article">
                 <div class="article-title">
-                  <h2>{{ item.title }}</h2>
+                  <h2 @click="doClick(item.id)">{{ item.title }}</h2>
                 </div>
                 <div class="article-attributes">
                   <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
@@ -143,6 +143,9 @@ export default {
       }).catch(error => {
         console.log(error)
       })
+    },
+    doClick (id) {
+      this.$message(id+'')
     },
     paging (currentPage, pageSize) {
       const startIndex = (currentPage - 1) * pageSize
