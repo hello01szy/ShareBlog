@@ -145,7 +145,7 @@ export default {
       })
     },
     doClick (id) {
-      this.$message(id+'')
+      this.$router.push('/blog')
     },
     paging (currentPage, pageSize) {
       const startIndex = (currentPage - 1) * pageSize

@@ -37,6 +37,11 @@ const routes = [
     component: () => import('@/views/Links')
   },
   {
+    path: '/words',
+    name: 'words',
+    component: () => import('@/views/LeaveWords')
+  },
+  {
     path: '*',
     redirect: '/lost'
   }

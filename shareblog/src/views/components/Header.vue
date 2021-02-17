@@ -5,7 +5,7 @@
     <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"> 文章</i></div>
     <div class="menuItem"><i class="fa fa-wrench" aria-hidden="true"> 工具</i></div>
     <div class="menuItem"><router-link to="/links"><i class="fa fa-link" aria-hidden="true"> 链接</i></router-link></div>
-    <div class="menuItem" @click="leaveWords"><i class="fa fa-comments-o" aria-hidden="true"> 留言板</i> </div>
+    <div class="menuItem"><router-link to="/words"><i class="fa fa-comments-o" aria-hidden="true"> 留言板</i></router-link></div>
     <div class="menuItem"><router-link to="/about"><i class="fa fa-info" aria-hidden="true"> 关于</i></router-link></div>
   </div>
 </template>
