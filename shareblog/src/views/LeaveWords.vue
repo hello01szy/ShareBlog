@@ -1,13 +1,25 @@
 <template>
   <div class="wordboard">
     <Header></Header>
+    <div class="item">
+      <div class="word_avator"></div>
+      <div class="message">
+        <div class="info">
+          <input type="text" style="width: 200px; height: 30px" />
+          <input type="text" style="width: 200px; height: 30px" />
+        </div>
+        <div class="inpt">
+          
+        </div>
+      </div>
+    </div>
     <div class="item" v-for="(item, index) in wordsData" :key='index'>
       <div :style="{backgroundImage:'url(' + item.avatorUrl + ')'}" class="word_avator"></div>
       <div class="message">
         <div class="info">
           <div class="messagerinfo">
             <div class="nick">{{ item.nickName }}</div>
-            <div class="publishTime">2021年2月16日</div>
+            <div class="publishTime">{{ item.publishTime }}</div>
           </div>
           <div class="admire">
             <div class="pointer"></div>
@@ -15,7 +27,7 @@
           </div>
         </div>
         <div class="inpt">
-          <span>多年未见，希望归来仍是少年</span>
+          <span>{{ item.words }}</span>
         </div>
       </div>
     </div>
@@ -25,6 +37,7 @@
 <script>
 import Header from '@/views/components/Header'
 import Loading from '@/components/Loading'
+import { parseStrToDate } from '../../util'
 export default {
   name: 'words',
   components: {
@@ -49,6 +62,7 @@ export default {
       this.$axios.get('/getWords', {}).then(res => {
         this.wordsData = res.data
         this.getQQ(this.wordsData)
+        console.log(this.wordsData)
         this.hide = true
       }).catch(error => {
         this.hide = true
@@ -59,6 +73,7 @@ export default {
       data.map(item => {
         const qq = item.email.split('@')[0]
         item.avatorUrl = 'http://q2.qlogo.cn/headimg_dl?dst_uin=' + qq + '&spec=2'
+        item.publishTime = parseStrToDate(item.publishTime)
       })
     }
   }
@@ -103,7 +118,7 @@ export default {
   .word_avator{
     width: 40px;
     height: 40px;
-    background-image: url('http://q2.qlogo.cn/headimg_dl?dst_uin=2856039370&spec=2');
+    background-image: url('~@/assets/user.png');
     background-size: 100%;
     background-position: center;
     background-repeat: no-repeat;
