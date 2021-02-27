@@ -5,11 +5,21 @@
       <div class="word_avator"></div>
       <div class="message">
         <div class="info">
-          <input type="text" style="width: 200px; height: 30px" />
-          <input type="text" style="width: 200px; height: 30px" />
+          <div class="spanInput">
+            <span>昵称</span>
+            <input type="text" style="width: 70%; height: 30px" placeholder="必填" />
+          </div>
+          <div class="spanInput">
+            <span>邮箱</span>
+            <input type="text" style="width: 70%; height: 30px" placeholder="必填" />
+          </div>
+          <div class="spanInput">
+            <span>网址</span>
+            <input type="text" style="width: 70%; height: 30px" placeholder="选填" />
+          </div>
         </div>
-        <div class="inpt">
-          
+        <div class="input">
+          <textarea name="words" id="heartword" rows="5" style="width: 95%; margin-top:10px"></textarea>
         </div>
       </div>
     </div>
@@ -141,10 +151,40 @@ export default {
     width: 100%;
     height: 25%;
   }
+  .info span{
+    height: 30px;
+    background-color: #f1f1f2;
+    display: inline-block;
+    text-align: center;
+    width: 60px;
+    border: 1px solid #dcdddf;
+    border-top-left-radius: .066667rem;
+    border-bottom-left-radius: .066667rem;
+    line-height: 30px;
+  }
+  .info input{
+    border: 1px solid #dcdddf;
+    outline: none;
+    padding-left: 4px;
+    font-size: 0.8em;
+    color: #1e1e1e;
+    transition: all 0.2s linear;
+    border-top-right-radius: .066667rem;
+    border-bottom-right-radius: .066667rem;
+  }
+  .info input:focus{
+    border: 1px solid #00a0ff;
+  }
   .nick{
     font-size: 0.9em;
     font-weight: bold;
     color: gray;
+  }
+  .spanInput{
+    width: 35%;
+    height: auto;
+    display: flex;
+    justify-content: left;
   }
   .publishTime{
     font-size: 0.8em;
