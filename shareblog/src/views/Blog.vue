@@ -69,24 +69,24 @@ export default {
   methods: {
     clickContentLi (index, eleIndex) {
       // 用来计算自己是第几个li
-      let items = 0
-      for (let i = 0; i < index; i++) {
-        items = items + this.navList[i].children.length
-      }
+      // let items = 0
+      // for (let i = 0; i < index; i++) {
+      //   items = items + this.navList[i].children.length
+      // }
       // 将父级标题算在内
-      items = items + index
+      // items = items + index
       // 将自己算进来
-      items = items + eleIndex + 1
+      // items = items + eleIndex + 1
       // this.$message(`data-${items}`)
-      this.triggerScroll(items)
+      // this.triggerScroll(items)
     },
     // 处理点击事件
     clickContentSpan (index) {
-      let dataIndex = 0
-      if (index > 0) {
-        dataIndex = this.navList[index - 1].children.length + 1
-      }
-      this.triggerScroll(dataIndex)
+      // let dataIndex = 0
+      // if (index > 0) {
+      //   dataIndex = this.navList[index - 1].children.length + 1
+      // }
+      // this.triggerScroll(dataIndex)
     },
     // 滚动条滚动方法
     triggerScroll (index) {

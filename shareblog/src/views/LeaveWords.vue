@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="input">
-          <textarea name="words" id="heartword" rows="5" style="width: 95%; margin-top:10px"></textarea>
+          <textarea name="words" id="heartword" rows="5"></textarea>
         </div>
       </div>
     </div>
@@ -206,5 +206,26 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+  }
+  .input{
+    width: 100%;
+    height: 75%;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+  }
+  .input textarea{
+    width: 99%;
+    height: 90%;
+    margin-top: 5px;
+    outline: none;
+    resize: none;
+    border-color:gray;
+    font-size: 0.8em;
+    font-family: '微软雅黑';
+  }
+  .input textarea:focus{
+    border-color: #00a0ff;
   }
 </style>
