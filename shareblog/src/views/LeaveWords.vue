@@ -21,6 +21,9 @@
         <div class="input">
           <textarea name="words" id="heartword" rows="5"></textarea>
         </div>
+        <div>
+          <button class="submit">提交</button>
+        </div>
       </div>
     </div>
     <div class="item" v-for="(item, index) in wordsData" :key='index'>
@@ -85,7 +88,7 @@ export default {
         item.avatorUrl = 'http://q2.qlogo.cn/headimg_dl?dst_uin=' + qq + '&spec=2'
         item.publishTime = parseStrToDate(item.publishTime)
       })
-    }
+    },
   }
 }
 </script>
@@ -108,7 +111,7 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
-    margin-top: 10px;
+    margin-top: 20px;
   }
   .inpt{
     width: 100%;
@@ -149,6 +152,7 @@ export default {
     justify-content: center;
     align-items: center;
     width: 100%;
+    min-width: 900px;
     height: 25%;
   }
   .info span{
@@ -209,6 +213,7 @@ export default {
   }
   .input{
     width: 100%;
+    min-width: 888px;
     height: 75%;
     display: flex;
     flex-direction: row;
@@ -223,9 +228,23 @@ export default {
     resize: none;
     border-color:gray;
     font-size: 0.8em;
+    padding: 3px 3px;
     font-family: '微软雅黑';
   }
   .input textarea:focus{
     border-color: #00a0ff;
+  }
+  .submit{
+    width: 60px;
+    height: 30px;
+    margin-top: 5px;
+    outline: none;
+    background-color: #00a0ff;
+    border: none;
+    border-radius: 2px;
+    color: white;
+  }
+  .submit:hover{
+    background-color: #22b9ff;
   }
 </style>
