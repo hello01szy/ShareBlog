@@ -1,10 +1,10 @@
 <template>
   <div class="wordboard">
     <Header></Header>
-    <div class="item">
-      <div class="word_avator"></div>
+    <div class="feedback">
       <div class="message">
         <div class="info">
+          <div class="word_avator"></div>
           <div class="spanInput">
             <span>昵称</span>
             <input type="text" style="width: 70%; height: 30px" placeholder="必填" />
@@ -18,18 +18,22 @@
             <input type="text" style="width: 70%; height: 30px" placeholder="选填" />
           </div>
         </div>
-        <div class="input">
-          <textarea name="words" id="heartword" rows="5"></textarea>
-        </div>
-        <div>
+      </div>
+    </div>
+    <div class="text">
+      <div class="input">
+        <textarea name="words" id="heartword" rows="5"></textarea>
+      </div>
+      <div class="btn-submit">
+        <div class="btn-box">
           <button class="submit">提交</button>
         </div>
       </div>
     </div>
     <div class="item" v-for="(item, index) in wordsData" :key='index'>
-      <div :style="{backgroundImage:'url(' + item.avatorUrl + ')'}" class="word_avator"></div>
       <div class="message">
         <div class="info">
+          <div :style="{backgroundImage:'url(' + item.avatorUrl + ')'}" class="word_avator"></div>
           <div class="messagerinfo">
             <div class="nick">{{ item.nickName }}</div>
             <div class="publishTime">{{ item.publishTime }}</div>
@@ -88,7 +92,7 @@ export default {
         item.avatorUrl = 'http://q2.qlogo.cn/headimg_dl?dst_uin=' + qq + '&spec=2'
         item.publishTime = parseStrToDate(item.publishTime)
       })
-    },
+    }
   }
 }
 </script>
@@ -96,17 +100,23 @@ export default {
   .wordboard{
     width: 100vw;
     height: 100vh;
+    min-width: 1072px;
+    min-height: 560px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
     background:linear-gradient(to right, #bb313e25, #bb313e25, #d7222925, #dd4a1625, #e4761525, #f5c50025, #f0e92725, #b1ce2425, #48a93525, #03944525, #157c4f25, #176a5825, #1b556325, #1d386f25, #1d386f25, #20277825, #52266325, #8a244b25);
   }
+  .feedback{
+    width: 90%;
+    margin-top: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .item{
-    width: 80%;
-    height: 20%;
-    box-sizing: border-box;
-    padding: 5px;
+    width: 90%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -122,6 +132,7 @@ export default {
     font-size: 0.6em;
     overflow: auto;
     margin-top: 2%;
+    padding-left: 4%;
   }
   .txt{
     outline: none;
@@ -131,6 +142,7 @@ export default {
   .word_avator{
     width: 40px;
     height: 40px;
+    margin-right: 10px;
     background-image: url('~@/assets/user.png');
     background-size: 100%;
     background-position: center;
@@ -139,7 +151,6 @@ export default {
   }
   .message{
     width: 80%;
-    height: 95%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -152,8 +163,6 @@ export default {
     justify-content: center;
     align-items: center;
     width: 100%;
-    min-width: 900px;
-    height: 25%;
   }
   .info span{
     height: 30px;
@@ -213,15 +222,14 @@ export default {
   }
   .input{
     width: 100%;
-    min-width: 888px;
     height: 75%;
     display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: center;
     align-items: center;
   }
-  .input textarea{
-    width: 99%;
+  textarea{
+    width: 80%;
     height: 90%;
     margin-top: 5px;
     outline: none;
@@ -230,8 +238,14 @@ export default {
     font-size: 0.8em;
     padding: 3px 3px;
     font-family: '微软雅黑';
+    background-image: url(~@/assets/writeboard.png);
+    /* background-attachment: fixed; */
+    background-position: right;
+    background-repeat: no-repeat;
+    /* background-position: right top; */
+    
   }
-  .input textarea:focus{
+  textarea:focus{
     border-color: #00a0ff;
   }
   .submit{
@@ -246,5 +260,28 @@ export default {
   }
   .submit:hover{
     background-color: #22b9ff;
+  }
+  .text{
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .btn-submit{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-box{
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 3px;
+  }
+  .submit:hover{
+    cursor: pointer;
   }
 </style>
