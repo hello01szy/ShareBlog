@@ -30,21 +30,23 @@
         </div>
       </div>
     </div>
-    <div class="item" v-for="(item, index) in wordsData" :key='index'>
-      <div class="message">
-        <div class="info">
-          <div :style="{backgroundImage:'url(' + item.avatorUrl + ')'}" class="word_avator"></div>
-          <div class="messagerinfo">
-            <div class="nick">{{ item.nickName }}</div>
-            <div class="publishTime">{{ item.publishTime }}</div>
+    <div class="item-container">
+      <div class="item" v-for="(item, index) in wordsData" :key='index'>
+        <div class="message">
+          <div class="info">
+            <div :style="{backgroundImage:'url(' + item.avatorUrl + ')'}" class="word_avator"></div>
+            <div class="messagerinfo">
+              <div class="nick">{{ item.nickName }}</div>
+              <div class="publishTime">{{ item.publishTime }}</div>
+            </div>
+            <div class="admire">
+              <div class="pointer"></div>
+              <div class="msg"></div>
+            </div>
           </div>
-          <div class="admire">
-            <div class="pointer"></div>
-            <div class="msg"></div>
+          <div class="inpt">
+            <span>{{ item.words }}</span>
           </div>
-        </div>
-        <div class="inpt">
-          <span>{{ item.words }}</span>
         </div>
       </div>
     </div>
@@ -123,9 +125,16 @@ export default {
     min-width: 1072px;
     min-height: 560px;
     display: flex;
+    overflow: hidden;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
+    background:linear-gradient(to right, #bb313e25, #bb313e25, #d7222925, #dd4a1625, #e4761525, #f5c50025, #f0e92725, #b1ce2425, #48a93525, #03944525, #157c4f25, #176a5825, #1b556325, #1d386f25, #1d386f25, #20277825, #52266325, #8a244b25);
+    background-attachment: fixed;
+  }
+  .item-container{
+    overflow-y: auto;
+    width: 90%;
   }
   .feedback{
     width: 90%;
