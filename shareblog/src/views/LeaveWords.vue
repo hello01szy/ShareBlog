@@ -7,26 +7,26 @@
           <div class="word_avator"></div>
           <div class="spanInput">
             <span>昵称</span>
-            <input type="text" style="width: 70%; height: 30px" placeholder="必填" />
+            <input type="text" style="width: 70%; height: 30px" placeholder="必填" v-model='msg.nickName'/>
           </div>
           <div class="spanInput">
             <span>邮箱</span>
-            <input type="text" style="width: 70%; height: 30px" placeholder="必填" />
+            <input type="text" style="width: 70%; height: 30px" placeholder="必填" v-model='msg.email'/>
           </div>
           <div class="spanInput">
             <span>网址</span>
-            <input type="text" style="width: 70%; height: 30px" placeholder="选填" />
+            <input type="text" style="width: 70%; height: 30px" placeholder="选填" v-model='msg.website'/>
           </div>
         </div>
       </div>
     </div>
     <div class="text">
       <div class="input">
-        <textarea name="words" id="heartword" rows="5"></textarea>
+        <textarea name="words" id="heartword" rows="5" v-model='msg.words'></textarea>
       </div>
       <div class="btn-submit">
         <div class="btn-box">
-          <button class="submit">提交</button>
+          <button class="submit" @click="postMsg">提交</button>
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
 <script>
 import Header from '@/views/components/Header'
 import Loading from '@/components/Loading'
-import { parseStrToDate } from '../../util'
+import { parseStrToDate, parseDateToStr } from '../../util'
 export default {
   name: 'words',
   components: {
@@ -65,7 +65,14 @@ export default {
     return {
       wordsData: [],
       hide: true,
-      bgImg: ''
+      bgImg: '',
+      msg: {
+        nickName: '',
+        email: '',
+        website: '',
+        words: '',
+        publishTime: ''
+      }
     }
   },
   created () {
@@ -92,6 +99,19 @@ export default {
         item.avatorUrl = 'http://q2.qlogo.cn/headimg_dl?dst_uin=' + qq + '&spec=2'
         item.publishTime = parseStrToDate(item.publishTime)
       })
+    },
+    postMsg () {
+      this.msg.publishTime = parseDateToStr()
+      this.getQQ([this.msg])
+      this.wordsData.push(this.msg)
+      this.$message.success('发表成功')
+      this.msg = {
+        email: '',
+        nickName: '',
+        publishTime: '',
+        website: '',
+        words: ''
+      }
     }
   }
 }
@@ -106,7 +126,6 @@ export default {
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
-    background:linear-gradient(to right, #bb313e25, #bb313e25, #d7222925, #dd4a1625, #e4761525, #f5c50025, #f0e92725, #b1ce2425, #48a93525, #03944525, #157c4f25, #176a5825, #1b556325, #1d386f25, #1d386f25, #20277825, #52266325, #8a244b25);
   }
   .feedback{
     width: 90%;
@@ -238,12 +257,10 @@ export default {
     font-size: 0.8em;
     padding: 3px 3px;
     font-family: '微软雅黑';
-    background-image: url(~@/assets/writeboard.png);
-    /* background-attachment: fixed; */
+    background-image: url(~@/assets/writeboard2.png);
+    background-size: 15%;
     background-position: right;
     background-repeat: no-repeat;
-    /* background-position: right top; */
-    
   }
   textarea:focus{
     border-color: #00a0ff;

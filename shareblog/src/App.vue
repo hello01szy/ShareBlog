@@ -9,65 +9,65 @@
   </div>
 </template>
 <script>
-  export default {
-    data () {
-      return {
-        isShow: false,
-        top: 0,
-        eventTarget: Object,
-        refresh: true
-      }
-    },
-    methods : {
-      outerScroll (event) {
-        const delta = event.target.scrollTop - this.top
-        this.top = event.target.scrollTop
-        this.eventTarget = event.target
-        const scrollData = {
-          'delta': delta,
-          'top': this.top
-        }
-        this.$store.commit('changeScrollTop', scrollData)
-        if (this.top >= 600) {
-          if (this.$route.path === '/') {
-            this.isShow = true
-          }
-        } else {
-          this.isShow = false
-        }
-      },
-      scollToTop () {
-        let timer = setInterval(() => {
-          const speed = Math.floor(-this.top / 5)
-          this.top = this.top + speed
-          if (this.top <= 0) {
-            this.top = 0
-            clearInterval(timer)
-          }
-          this.eventTarget.scrollTop = this.top
-        }, 30)
-      },
-      // 页面刷新方法
-      reload () {
-        console.log('reload')
-        this.refresh = false
-        this.$nextTick( function () {
-          this.refresh = true
-        })
-      }
-    },
-    provide () {
-      return {
-        reload: this.reload
-      }
-    },
-    mounted () {
-      window.addEventListener('scroll', this.outerScroll, true)
-    },
-    destroyed () {
-      window.removeEventListener('scroll', this.outerScroll)
+export default {
+  data () {
+    return {
+      isShow: false,
+      top: 0,
+      eventTarget: Object,
+      refresh: true
     }
+  },
+  methods: {
+    outerScroll (event) {
+      const delta = event.target.scrollTop - this.top
+      this.top = event.target.scrollTop
+      this.eventTarget = event.target
+      const scrollData = {
+        delta: delta,
+        top: this.top
+      }
+      this.$store.commit('changeScrollTop', scrollData)
+      if (this.top >= 600) {
+        if (this.$route.path === '/') {
+          this.isShow = true
+        }
+      } else {
+        this.isShow = false
+      }
+    },
+    scollToTop () {
+      const timer = setInterval(() => {
+        const speed = Math.floor(-this.top / 5)
+        this.top = this.top + speed
+        if (this.top <= 0) {
+          this.top = 0
+          clearInterval(timer)
+        }
+        this.eventTarget.scrollTop = this.top
+      }, 30)
+    },
+    // 页面刷新方法
+    reload () {
+      console.log('reload')
+      this.refresh = false
+      this.$nextTick(function () {
+        this.refresh = true
+      })
+    }
+  },
+  provide () {
+    return {
+      reload: this.reload
+    }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.outerScroll, true)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.outerScroll)
   }
+}
 </script>
 <style>
 #app {

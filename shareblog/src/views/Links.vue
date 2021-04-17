@@ -12,7 +12,6 @@
 </template>
 <script>
 import Header from '@/views/components/Header'
-import Card from '@/views/components/Card'
 import Loading from '@/components/Loading'
 export default {
   name: 'Links',
@@ -24,12 +23,11 @@ export default {
   },
   components: {
     Header: Header,
-    Card: Card,
     Loading: Loading
   },
   created () {
     this.loading = false
-    this.$axios.get('/getLinks',{}).then(res => {
+    this.$axios.get('/getLinks', {}).then(res => {
       this.linksData = res.data
       this.loading = true
     }).catch(error => {
@@ -43,6 +41,8 @@ export default {
   .container{
     width: 100vw;
     height: 100vh;
+    min-width: 1072px;
+    min-height: 560px;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -53,7 +53,7 @@ export default {
     height: auto;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
     margin-top: 20px;
@@ -73,6 +73,7 @@ export default {
     padding-left: 10px;
     padding-right: 10px;
     cursor: pointer;
+    margin-right: 5px;
   }
   .card span{
     z-index: 10;

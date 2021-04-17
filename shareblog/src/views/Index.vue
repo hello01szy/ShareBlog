@@ -185,6 +185,8 @@ export default {
   .header {
     width: 100vw;
     height: 100vh;
+    min-width: 1072px;
+    min-height: 560px;
     background-image: url('~@/assets/header.png');
     background-repeat: no-repeat;
     background-position: center;
