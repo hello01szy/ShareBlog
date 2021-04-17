@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '@/views/Index.vue'
 import About from '@/views/About.vue'
+import store from '@/store/index'
 
 Vue.use(VueRouter)
 
@@ -49,6 +50,16 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/') {
+    console.log(to.path)
+    store.commit('changeupToTop', false)
+  } else {
+    store.commit('changeupToTop', true)
+  }
+  next()
 })
 
 export default router

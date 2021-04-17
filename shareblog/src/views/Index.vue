@@ -176,6 +176,9 @@ export default {
   mounted () {
     // window.addEventListener('scroll', this.handleScroll, true)
   },
+  activated () {
+    this.dissipate = false
+  },
   destoryed () {
     // window.removeEventListener('scroll', this.handleScroll)
   }

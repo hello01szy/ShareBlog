@@ -3,7 +3,7 @@
     <keep-alive>
       <router-view v-if="refresh"/>
     </keep-alive>
-    <div :class="{'back-to-top':true, 'show':isShow }" @click="scollToTop">
+    <div :class="{'back-to-top':true, 'show':(isShow && this.$store.state.upToTop) }" @click="scollToTop">
       <i id="up" class="fa fa-angle-double-up" aria-hidden="true"></i>
     </div>
   </div>
@@ -29,7 +29,8 @@ export default {
       }
       this.$store.commit('changeScrollTop', scrollData)
       if (this.top >= 600) {
-        if (this.$route.path === '/') {
+        this.$store.commit('changeupToTop', true)
+        if (this.$store.state.upToTop) {
           this.isShow = true
         }
       } else {
@@ -61,11 +62,26 @@ export default {
       reload: this.reload
     }
   },
+  computed: {
+    getUpToTop () {
+      return this.$store.state.upToTop
+    }
+  },
   mounted () {
     window.addEventListener('scroll', this.outerScroll, true)
   },
   destroyed () {
     window.removeEventListener('scroll', this.outerScroll)
+  },
+  watch: {
+    getUpToTop () {
+      this.top = 0
+      if (this.top >= 600) {
+        this.isShow = true
+      } else {
+        this.isShow = false
+      }
+    }
   }
 }
 </script>
