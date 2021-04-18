@@ -2,7 +2,20 @@
   <div class="menu">
     <div class="menuItem"><SearchBtn></SearchBtn></div>
     <div class="menuItem"><router-link to="/"><i style="font: size 1.2em;" class="fa fa-home" aria-hidden="true"> 首页</i></router-link></div>
-    <div class="menuItem"><i class="fa fa-file-text" aria-hidden="true"> 文章</i></div>
+    <div class="menuItem" id="head-article">
+      <i class="fa fa-file-text" aria-hidden="true"> 文章</i>
+      <ul class="dropdown">
+        <li>
+          <a>前端</a>
+        </li>
+        <li>
+          <a>后端</a>
+        </li>
+        <li>
+          <a>运维</a>
+        </li>
+      </ul>
+    </div>
     <div class="menuItem"><i class="fa fa-wrench" aria-hidden="true"> 工具</i></div>
     <div class="menuItem"><router-link to="/links"><i class="fa fa-link" aria-hidden="true"> 链接</i></router-link></div>
     <div class="menuItem"><router-link to="/words"><i class="fa fa-comments-o" aria-hidden="true"> 留言板</i></router-link></div>
@@ -42,9 +55,11 @@ export default {
   }
   .menuItem{
     margin-right: 30px;
+    line-height: 35px;
     color: #d4cfcf;
     font-size: 0.9em;
     cursor: pointer;
+    position: relative;
   }
   .menuItem a {
     color: #d4cfcf
@@ -52,5 +67,32 @@ export default {
   .menuItem :hover{
     color: #ffffff;
     transition: all 0.4s ease;
+  }
+  
+  .dropdown{
+    position: absolute;
+    width: 160%;
+    left: 50%;
+    top: 35px;
+    transform: translate(-50%,0);
+    text-decoration: none;
+    list-style: none;
+    background-color: rgba(50, 50, 50, 0.5);
+    box-sizing: border-box;
+    padding: 5px;
+    border-radius: 2px;
+    display: none;
+  }
+  .dropdown li{
+    width: 100%;
+    letter-spacing: 3px;
+    text-align: center;
+    line-height: 20px;
+  }
+  .dropdown li:hover{
+    background-color: #2880b0;
+  }
+  #head-article:hover ul.dropdown{
+    display: block;
   }
 </style>
