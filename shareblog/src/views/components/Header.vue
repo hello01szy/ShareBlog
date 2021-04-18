@@ -55,11 +55,14 @@ export default {
   }
   .menuItem{
     margin-right: 30px;
-    line-height: 35px;
+    height: 35px;
     color: #d4cfcf;
     font-size: 0.9em;
     cursor: pointer;
     position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .menuItem a {
     color: #d4cfcf
@@ -72,27 +75,28 @@ export default {
   .dropdown{
     position: absolute;
     width: 160%;
-    left: 50%;
     top: 35px;
-    transform: translate(-50%,0);
+    transition: all 0.2s linear;
     text-decoration: none;
     list-style: none;
     background-color: rgba(50, 50, 50, 0.5);
     box-sizing: border-box;
-    padding: 5px;
     border-radius: 2px;
-    display: none;
+    transform: translateY(-10%);
+    height: 0px;
+    overflow: hidden;
   }
   .dropdown li{
     width: 100%;
     letter-spacing: 3px;
     text-align: center;
-    line-height: 20px;
+    line-height: 25px;
   }
   .dropdown li:hover{
     background-color: #2880b0;
   }
   #head-article:hover ul.dropdown{
-    display: block;
+    height: auto;
+    transform: translateY(0);
   }
 </style>
