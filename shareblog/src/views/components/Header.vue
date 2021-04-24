@@ -33,7 +33,7 @@ export default {
     }
   },
   components: {
-    'SearchBtn': SearchBtn
+    SearchBtn: SearchBtn
   }
 }
 </script>
@@ -71,7 +71,6 @@ export default {
     color: #ffffff;
     transition: all 0.4s ease;
   }
-  
   .dropdown{
     position: absolute;
     width: 160%;
