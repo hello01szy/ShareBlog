@@ -3,18 +3,19 @@
     <div class="blogheader">
       <Header></Header>
       <div class="blogheadercover">
-        <h2>{{ blog.title }}</h2>
-        <span>分类：{{ blog.tag }} | 发表于：{{ blog.publish }}</span>
+        <h2>博文</h2>
+        <span>分类：后端 | 发表于：2022-04-09</span>
       </div>
     </div>
-    <div class="blogbody">
+    <div>
       <div class="blogContainer">
-        <Card :childHeight="blogCardHeight">
-          <template v-slot:blog>
-            <div v-html="blog.content" class="mdStyle">
-            </div>
-          </template>
-        </Card>
+        <mavon-editor
+          :toolbarsFlag='markdownOption.toolbarsFlag'
+          :editable='markdownOption.editable'
+          :defaultOpen='markdownOption.defaultOpen'
+          :subfield='markdownOption.subfield'
+          :navigation='markdownOption.navigation'
+          v-model="handbook"/>
       </div>
     </div>
   </div>
@@ -22,15 +23,21 @@
 
 <script>
 import Header from '@/views/components/Header'
-import Card from '@/views/components/Card'
 export default {
   name: 'Blog',
   components: {
-    Header: Header,
-    Card: Card
+    Header: Header
   },
   data () {
     return {
+      markdownOption: {
+        defaultOpen: 'preview',
+        editable: false,
+        toolbarsFlag: false,
+        subfield: false,
+        navigation: true
+      },
+      handbook: '#### how to use mavonEditor in nuxt.js'
     }
   },
   methods: {
@@ -46,8 +53,7 @@ export default {
 .blogPage{
   width: 100%;
   height: 100vh;
-  overflow: scroll;
-  -webkit-user-select: none;
+  user-select: none;
 }
 .blogheader{
   width: 100%;
@@ -84,21 +90,9 @@ export default {
   margin-top: 0.5%;
 }
 .blogContainer{
-  width: 75%;
-  height: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding-top: 3%;
-}
-.blogbody{
-  width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  /* align-items: center; */
-  background-color: rgba(0, 0, 0, 0.1)
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .blogSideContent{
   width: 25%;
