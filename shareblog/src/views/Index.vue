@@ -124,7 +124,9 @@ export default {
     dropdown () {
       console.log('dropdown')
       // 设置让滚动条缓慢移动对应位置
+      // eslint-disable-next-line
       const height = this.$refs['header'].offsetHeight + 35
+      // eslint-disable-next-line
       this.top = this.$refs['header'].scrollTop
       const timer = setInterval(() => {
         const speed = (height - this.top) / 3
@@ -133,6 +135,7 @@ export default {
           clearInterval(timer)
         }
         this.top = this.top + speed
+        // eslint-disable-next-line
         this.$refs['header'].scrollTop = this.top
       }, 30)
     },
@@ -193,7 +196,7 @@ export default {
     background-image: url('~@/assets/header.png');
     background-repeat: no-repeat;
     background-position: center;
-    background-size: 100%;
+    background-size: cover;
     background-attachment: fixed;
     position: relative;
     overflow-x: hidden;

@@ -34,15 +34,12 @@ export default {
     },
     searchFromNet () {
       this.$axios.post('/search', {
-        'keywords': this.keywords
+        keywords: this.keywords
       }).then(res => {
         this.results = res.data
         this.novisible = false
       }).catch(error => {
-          this.$message({
-          showClose: true,
-          message: error
-        })
+        this.$message({ showClose: true, message: error })
       })
     }
   }

@@ -20,14 +20,15 @@ export default {
     }
   },
   components: {
-    'Header' : Header
+    Header
   },
   mounted () {
-    let obj = document.getElementsByClassName('about')[0]
+    const obj = document.getElementsByClassName('about')[0]
     obj.style.backgroundPositionX = 0 + 'px'
     obj.style.backgroundPositionY = 0 + 'px'
     window.onmousemove = (e) => {
-      let x = -e.clientX / 50, y = -e.clientY / 50
+      const x = -e.clientX / 50
+      const y = -e.clientY / 50
       obj.style.backgroundPositionX = x + 'px'
       obj.style.backgroundPositionY = y + 'px'
     }
@@ -47,7 +48,7 @@ export default {
     background-size: 105%;
     background-repeat: no-repeat;
     position: relative;
-    overflow-x: hidden; 
+    overflow-x: hidden;
     transition: all 0.2s linear;
   }
   .desc{

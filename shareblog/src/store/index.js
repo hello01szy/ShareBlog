@@ -12,7 +12,7 @@ export default new Vuex.Store({
   },
   mutations: {
     changeScrollTop (state, newValue) {
-      state.scrollTop = newValue.top,
+      state.scrollTop = newValue.top
       state.delta = newValue.delta
     },
     changeupToTop (state, newValue) {

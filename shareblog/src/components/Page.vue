@@ -56,7 +56,7 @@ export default {
       }
       pageElement.appendChild(backBtn)
       // 用来记录当页展示的个数是不是大于一页应显示的数据，如果大于则直接创建pagesize数量的页码，否则则要根据currentPage来创建第一个页码
-      let startPage = Math.floor((currentPage-1) / pageSize) * pageSize + 1
+      let startPage = Math.floor((currentPage - 1) / pageSize) * pageSize + 1
       const count = total + 1 - startPage
       let endPage = 0
       if (count <= pageSize) {
@@ -77,7 +77,7 @@ export default {
         li.setAttribute('action', i)
         // 为每个li添加事件响应
         li.addEventListener('click', () => {
-          currentPage = parseInt(li.getAttribute('action')) 
+          currentPage = parseInt(li.getAttribute('action'))
           this.paging(currentPage, pageSize, total)
         })
         pageElement.appendChild(li)
@@ -97,22 +97,22 @@ export default {
     },
     doEnter (event) {
       if (event.keyCode === 13) {
-        const obj  = document.getElementsByClassName('skip')[0]
+        const obj = document.getElementsByClassName('skip')[0]
         const value = parseInt(document.getElementsByClassName('skip')[0].value)
         if (value > this.totalPage) {
           // 如果输入值过大，添加提示样式
           obj.classList.add('validValue')
-          this.currentPageIndex =  this.totalPage
+          this.currentPageIndex = this.totalPage
         } else if (value <= 0) {
           obj.classList.add('validValue')
           this.currentPageIndex = 1
         } else {
-          if (obj.classList.contains('validValue'))  {
+          if (obj.classList.contains('validValue')) {
             obj.classList.remove(['validValue'])
           }
           this.currentPageIndex = value
         }
-        this.paging(this.currentPageIndex, this.pageSize,  this.totalPage)
+        this.paging(this.currentPageIndex, this.pageSize, this.totalPage)
       }
     }
   },
@@ -152,7 +152,7 @@ export default {
     transition: all 0.2s linear;
   }
   .page-ul li:hover{
-    background-color: aqua;
+    background-color: #353b48;
     cursor: pointer;
     color: #ffffff;
   }
@@ -160,7 +160,7 @@ export default {
     pointer-events: none;
   }
   .selected{
-    background-color: aqua;
+    background-color: #353b48;
     color: #ffffff;
   }
   .skipDiv{

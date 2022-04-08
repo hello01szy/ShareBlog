@@ -1,7 +1,7 @@
 <template>
   <div class="container404">
     <div class="space404">
-      <img src="~@/assets/space.png" class="img404" speed="3" alt="">    
+      <img src="~@/assets/space.png" class="img404" speed="3" alt="">
     </div>
     <div class="top404">
       <div class="title">404 NOT FOUND</div>
@@ -24,15 +24,14 @@ export default {
       document.getElementsByClassName('img404').forEach((element, index) => {
         const speed = element.getAttribute('speed')
         if (index === 0) {
-          const x  = (window.innerWidth - e.pageX * speed) / 200
+          const x = (window.innerWidth - e.pageX * speed) / 200
           const y = (window.innerHeight - e.pageY * speed) / 200
           element.style.transform = `translateX(${x}px) translateY(${y}px)`
         } else {
-          const x  = (window.innerWidth + e.pageX * speed) / 300
+          const x = (window.innerWidth + e.pageX * speed) / 300
           const y = (window.innerHeight + e.pageY * speed) / 300
           element.style.transform = `translateX(${x}px) translateY(${y}px)`
         }
-        
       })
     },
     // 返回至首页
@@ -95,7 +94,7 @@ export default {
 }
 .top404{
   position: absolute;
-  width: 100%;  
+  width: 100%;
   height: 80%;
   top: 5%;
   left: 50%;
