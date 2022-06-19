@@ -1,43 +1,47 @@
 <template>
   <div class="blogPage">
-    <div class="blogheader">
+    <div class="blogheader" :style="{ 'background-image': 'url(' + blog.cover + ')' }">
       <Header></Header>
       <div class="blogheadercover">
-        <h2>博文</h2>
-        <span>分类：后端 | 发表于：2022-04-09</span>
+        <h2>{{ blog.title }}</h2>
+        <span>分类：{{ blog.tag }} | 发表于：{{ blog.publishDate }}</span>
       </div>
     </div>
     <div>
       <div class="blogContainer">
-        <mavon-editor
-          :toolbarsFlag='markdownOption.toolbarsFlag'
-          :editable='markdownOption.editable'
-          :defaultOpen='markdownOption.defaultOpen'
-          :subfield='markdownOption.subfield'
-          :navigation='markdownOption.navigation'
-          v-model="handbook"/>
+        <Card :childWidth="'80%'" :childHeight='"auto"' style="padding: 50px; text-align: left; line-height: 28px;">
+          <template v-slot:blog>
+            <div v-html="blog.content"></div>
+          </template>
+        </Card>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+import { getArticleById } from '@/http/request.js'
 import Header from '@/views/components/Header'
+import Card from '@/views/components/Card'
+import { parseStrToDate } from '../../util'
 export default {
   name: 'Blog',
   components: {
-    Header: Header
+    Header: Header,
+    Card: Card
+  },
+  props: {
+    blog: {
+      author: '',
+      tag: '爱情',
+      content: '',
+      publishDate: '',
+      publishTime: '',
+      cover: '',
+      title: ''
+    }
   },
   data () {
     return {
-      markdownOption: {
-        defaultOpen: 'preview',
-        editable: false,
-        toolbarsFlag: false,
-        subfield: false,
-        navigation: true
-      },
-      handbook: '#### how to use mavonEditor in nuxt.js'
     }
   },
   methods: {
@@ -45,6 +49,14 @@ export default {
   created () {
   },
   mounted () {
+    getArticleById({
+      articleId: this.$route.query.articleId
+    }).then(res => {
+      this.blog = res.data.data
+      this.blog.publishDate = parseStrToDate(this.blog.publishDate)
+      console.log(this.blog)
+      console.log(res.data)
+    })
   }
 }
 </script>
@@ -58,7 +70,6 @@ export default {
 .blogheader{
   width: 100%;
   height: 45%;
-  background-image: url('~@/assets/duty.jpg');
   background-size: cover;
   overflow: hidden;
   background-repeat: no-repeat;
@@ -93,6 +104,7 @@ export default {
   margin-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
+  padding-bottom: 60px;
 }
 .blogSideContent{
   width: 25%;
@@ -179,5 +191,9 @@ export default {
   line-height: 40px;
   margin-left: 4px;
   font-size: 1.4em;
+}
+.blog-item >>> p{
+  font-size: 14px;
+  text-indent: 20px;
 }
 </style>

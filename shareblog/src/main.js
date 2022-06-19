@@ -8,11 +8,7 @@ import cookie from './lib/cookie'
 import ElementUI from 'element-ui'
 import instance from '@/http/http.js'
 import 'element-ui/lib/theme-chalk/index.css'
-import mavonEditor from 'mavon-editor'
-import 'mavon-editor/dist/css/index.css'
-require('./mock/mock.js')
 Vue.use(ElementUI)
-Vue.use(mavonEditor)
 Vue.config.productionTip = false
 Vue.prototype.cookie = cookie
 Vue.prototype.$axios = instance

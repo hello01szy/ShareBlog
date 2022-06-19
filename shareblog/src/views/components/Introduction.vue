@@ -159,13 +159,6 @@ export default {
     gitFlow () {
       this.$emit('goToGitHub')
     }
-  },
-  created () {
-    this.$axios.get('/tag').then(res => {
-      this.tagData = res.data
-    }).catch(error => {
-      console.log(error.data)
-    })
   }
 }
 </script>

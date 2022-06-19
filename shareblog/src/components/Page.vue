@@ -43,6 +43,9 @@ export default {
   methods: {
     paging (currentPage, pageSize, total) {
       const pageElement = document.getElementsByClassName('page-ul')[0]
+      if (!pageElement) {
+        return
+      }
       pageElement.innerHTML = ''
       const backBtn = document.createElement('li')
       backBtn.innerHTML = '<i class="fa fa-angle-double-left" aria-hidden="true"></i>'

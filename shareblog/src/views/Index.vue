@@ -16,9 +16,8 @@
         <div class="blogs">
           <Card v-for="(item, key) in showBlogs" :key="key">
             <template v-slot:pic>
-              <!-- <div class="scale-pic"></div> -->
               <div class="pic-frame">
-                <img src="~@/assets/scale.jpg" alt="haha" class="scale-pic">
+                <img :src="item.cover" alt="haha" class="scale-pic">
               </div>
             </template>
             <template v-slot:blog>
@@ -27,11 +26,19 @@
                   <h2 @click="doClick(item.id)">{{ item.title }}</h2>
                 </div>
                 <div class="article-attributes">
-                  <span><i class="fa fa-calendar" aria-hidden="true"> 发布时间：2020年12月27日</i> | <i class="fa fa-eye" aria-hidden="true"> 浏览次数：100</i> | <i class="fa fa-tags" aria-hidden="true"> <a href="#"> 情感专栏</a></i></span>
+                  <span>
+                    <i class="fa fa-calendar" aria-hidden="true">
+                      发布时间：{{ item.publishDate }}
+                    </i> |
+                    <i class="fa fa-eye" aria-hidden="true">
+                      浏览次数：100
+                    </i> |
+                    <i class="fa fa-tags" aria-hidden="true">
+                      <a href="#"> 情感专栏</a>
+                    </i>
+                  </span>
                 </div>
-                <div class="article-content">
-                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
-                  曾经有一份美好的爱情摆在我面前，我没有珍惜，如果要给在这份爱加份期限，那将是1000年
+                <div class="article-content" v-html="item.summary">
                 </div>
               </div>
             </template>
@@ -52,6 +59,8 @@ import Card from '@/views/components/Card'
 import Introduction from '@/views/components/Introduction'
 import Page from '@/components/Page'
 import Loading from '@/components/Loading.vue'
+import { getAllArticles } from '@/http/request.js'
+import { parseStrToDate } from '../../util.js'
 export default {
   name: 'Index',
   data () {
@@ -117,7 +126,6 @@ export default {
       } else if (delta > 0) {
         this.isHeadHide = true
         this.indexMenuMove = false
-        console.log(this.isHeadHide)
       }
     },
     // 点击向下图标，让滚动条向下滚动
@@ -139,16 +147,13 @@ export default {
         this.$refs['header'].scrollTop = this.top
       }, 30)
     },
-    getBlogs () {
-      this.$axios.get('/test').then(res => {
-        this.blogs = res.data.articles
-        this.total = Math.ceil(parseInt(res.data.articles.length) / 5)
-      }).catch(error => {
-        console.log(error)
-      })
-    },
     doClick (id) {
-      this.$router.push('/blog')
+      this.$router.push({
+        path: '/blog',
+        query: {
+          articleId: id
+        }
+      })
     },
     paging (currentPage, pageSize) {
       const startIndex = (currentPage - 1) * pageSize
@@ -156,7 +161,7 @@ export default {
       if (endIndex > this.blogs.length) {
         endIndex = this.blogs.length
       }
-      this.showBlogs = this.blogs.slice(startIndex, endIndex)
+      // this.showBlogs = this.blogs.slice(startIndex, endIndex)
     },
     showLoading () {
       this.loadingShow = false
@@ -169,7 +174,18 @@ export default {
       }, 3000)
     },
     goToGitHub () {
-
+    },
+    getBlogs () {
+      getAllArticles().then(res => {
+        this.showBlogs = res.data.data
+        this.showBlogs.map(item => {
+          item.publishDate = parseStrToDate(item.publishDate)
+        })
+        this.total = 3
+      }).catch(err => {
+        this.$message.error('请求所有文章出错')
+        console.log(err)
+      })
     }
   },
   created () {
@@ -299,6 +315,7 @@ export default {
   .scale-pic{
     width: 100%;
     height: 100%;
+    object-fit: cover;
     border-radius: 4px 0px 0px 4px;
     background-repeat: no-repeat;
     background-size: 100% 100%;
@@ -368,6 +385,9 @@ export default {
     text-overflow: ellipsis;
     overflow: hidden;
     line-height: 1.5em;
+    padding-bottom: 10px;
+    letter-spacing: 2px;
+    user-select: none;
     /* 省略号展示多余内容
       display: -webkit-box;
       -webkit-box-orient: vertical;

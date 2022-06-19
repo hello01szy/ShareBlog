@@ -5,18 +5,18 @@ module.exports = {
   // 配置跨域
   devServer: {
     open: false,
-    host: '0.0.0.0',
+    host: 'localhost',
     port: '8080',
     https: false,
     hotOnly: true,
-    // proxy: {
-    //   '/blog': {
-    //     target: 'http://localhost:8081',
-    //     changeOrigin: true,
-    //     pathRewrite: {
-    //       '/blog': ''
-    //     }
-    //   }
-    // }
+    proxy: {
+      '/article': {
+        target: 'http://192.168.1.19:8081',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/article': ''
+        }
+      }
+    }
   }
 }
