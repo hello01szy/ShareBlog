@@ -3,9 +3,6 @@
     <keep-alive>
       <router-view v-if="refresh"/>
     </keep-alive>
-    <div :class="{'back-to-top':true, 'show':(isShow && this.$store.state.upToTop) }" @click="scollToTop">
-      <i id="up" class="fa fa-angle-double-up" aria-hidden="true"></i>
-    </div>
   </div>
 </template>
 <script>
@@ -19,38 +16,8 @@ export default {
     }
   },
   methods: {
-    outerScroll (event) {
-      const delta = event.target.scrollTop - this.top
-      this.top = event.target.scrollTop
-      this.eventTarget = event.target
-      const scrollData = {
-        delta: delta,
-        top: this.top
-      }
-      this.$store.commit('changeScrollTop', scrollData)
-      if (this.top >= 600) {
-        this.$store.commit('changeupToTop', true)
-        if (this.$store.state.upToTop) {
-          this.isShow = true
-        }
-      } else {
-        this.isShow = false
-      }
-    },
-    scollToTop () {
-      const timer = setInterval(() => {
-        const speed = Math.floor(-this.top / 5)
-        this.top = this.top + speed
-        if (this.top <= 0) {
-          this.top = 0
-          clearInterval(timer)
-        }
-        this.eventTarget.scrollTop = this.top
-      }, 30)
-    },
     // 页面刷新方法
     reload () {
-      console.log('reload')
       this.refresh = false
       this.$nextTick(function () {
         this.refresh = true
@@ -60,27 +27,6 @@ export default {
   provide () {
     return {
       reload: this.reload
-    }
-  },
-  computed: {
-    getUpToTop () {
-      return this.$store.state.upToTop
-    }
-  },
-  mounted () {
-    window.addEventListener('scroll', this.outerScroll, true)
-  },
-  destroyed () {
-    window.removeEventListener('scroll', this.outerScroll)
-  },
-  watch: {
-    getUpToTop () {
-      this.top = 0
-      if (this.top >= 600) {
-        this.isShow = true
-      } else {
-        this.isShow = false
-      }
     }
   }
 }
@@ -93,7 +39,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   overflow-x: hidden;
   position: relative;
 }

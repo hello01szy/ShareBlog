@@ -1,5 +1,6 @@
 <template>
   <div class="header" ref="header">
+    <el-backtop target='.header' :bottom='50'></el-backtop>
     <Header :class="{headHide:isHeadHide, menumove: indexMenuMove}" @leaveWords = "showLoading"></Header>
     <div class="cover">
       <span id="title" :class="{ move: dissipate}">欢迎来到我的博客</span>

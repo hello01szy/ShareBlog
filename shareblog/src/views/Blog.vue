@@ -1,5 +1,5 @@
 <template>
-  <div class="blogPage">
+  <div class="blogPage" v-if="blog">
     <div class="blogheader" :style="{ 'background-image': 'url(' + blog.cover + ')' }">
       <Header></Header>
       <div class="blogheadercover">
@@ -7,13 +7,32 @@
         <span>分类：{{ blog.tag }} | 发表于：{{ blog.publishDate }}</span>
       </div>
     </div>
-    <div>
+    <div class="blog-body">
       <div class="blogContainer">
-        <Card :childWidth="'80%'" :childHeight='"auto"' style="padding: 50px; text-align: left; line-height: 28px;">
-          <template v-slot:blog>
-            <div v-html="blog.content"></div>
-          </template>
-        </Card>
+        <div v-html="blog.content" class="content" ref="shareContent"></div>
+        <div style="position: relative; height: 100px;">
+          <div
+            :class="{ 'heart': true, 'heartAnimation': like }"
+            ref="heart"
+            type='unlike'
+            @click="lightHeart">
+          </div>
+          <span class="like-counts">{{ count }}</span>
+        </div>
+        <div class="footer">
+          <span><a href="">上一篇文章</a></span>
+          <span><a href="">下一篇文章</a></span>
+        </div>
+      </div>
+      <div class="article-navigator">
+        <ul class="share-ul">
+          <li
+            v-for="(item, index) in lis"
+            :style="{'padding-left': item.level * 10 + 'px'}"
+            :key="index" @click="jumpToId(item.id)">
+            {{ item.content }}
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -21,32 +40,63 @@
 <script>
 import { getArticleById } from '@/http/request.js'
 import Header from '@/views/components/Header'
-import Card from '@/views/components/Card'
 import { parseStrToDate } from '../../util'
 export default {
   name: 'Blog',
   components: {
-    Header: Header,
-    Card: Card
-  },
-  props: {
-    blog: {
-      author: '',
-      tag: '爱情',
-      content: '',
-      publishDate: '',
-      publishTime: '',
-      cover: '',
-      title: ''
-    }
+    Header: Header
   },
   data () {
     return {
+      blog: {
+        author: '',
+        tag: '爱情',
+        content: '',
+        publishDate: '',
+        publishTime: '',
+        cover: '',
+        title: ''
+      },
+      like: false,
+      count: 10,
+      // 用来设置目录的数据源头
+      lis: []
     }
   },
-  methods: {
-  },
   created () {
+  },
+  methods: {
+    jumpToId (id) {
+      const ele = document.getElementById(id)
+      ele.scrollIntoView({ behavior: 'smooth' })
+    },
+    lightHeart () {
+      this.like = !this.like
+      if (this.like) {
+        this.count = this.count + 1
+      } else {
+        this.count = this.count - 1
+      }
+    },
+    abstractTitle (content) {
+      let arr = content.match(/<h\d+>.*?<\/h\d+>/g)
+      const levels = []
+      const lis = []
+      arr.map(item => {
+        const level = item.match(/\d.*?/)[0]
+        levels.push(level)
+      })
+      const minLevel = Math.min(...levels)
+      arr = arr.map((element, index) => {
+        const item = {}
+        const level = element.match(/\d.*?/)[0]
+        item.content = element.replace(/<\/*h\d+>/g, '')
+        item.id = 'share-blog-' + index
+        item.level = level - minLevel
+        lis.push(item)
+      })
+      return lis
+    }
   },
   mounted () {
     getArticleById({
@@ -54,18 +104,56 @@ export default {
     }).then(res => {
       this.blog = res.data.data
       this.blog.publishDate = parseStrToDate(this.blog.publishDate)
-      console.log(this.blog)
-      console.log(res.data)
+      // 提取出文本中的标题
+      this.lis = this.abstractTitle(this.blog.content)
+    })
+  },
+  updated () {
+    let children = Array.from(this.$refs.shareContent.children)
+    const reg = /H\d+/
+    children = children.filter(item => reg.test(item.nodeName))
+    children.map((item, index) => {
+      item.id = this.lis[index].id
     })
   }
 }
 </script>
 
 <style scoped>
+.article-navigator{
+  width: calc(25% - 20px);
+  float: right;
+  margin-right: 10px;
+  background-color: #ffffff;
+  border-radius: 4px;
+  position: sticky;
+  top: 10px;
+}
+.footer{
+  padding: 15px 5px 10px 5px;
+  text-align: left;
+}
+.footer span{
+  color: #253f50;
+  font-size: 14px;
+}
+.footer span:nth-of-type(2) {
+  float: right;
+}
 .blogPage{
   width: 100%;
-  height: 100vh;
+  height: 100%;
   user-select: none;
+}
+.blog-body{
+  background-color: #f8f8f8;
+  padding-bottom: 20px;
+  padding-top: 20px;
+}
+.blog-body::after{
+  content: '';
+  display: block;
+  clear: both;
 }
 .blogheader{
   width: 100%;
@@ -74,7 +162,6 @@ export default {
   overflow: hidden;
   background-repeat: no-repeat;
   position: relative;
-
 }
 .blogheadercover{
   position: absolute;
@@ -101,99 +188,80 @@ export default {
   margin-top: 0.5%;
 }
 .blogContainer{
-  margin-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 60px;
-}
-.blogSideContent{
-  width: 25%;
-  height: 100%;
-  padding-top: 3%;
-  top: 0%;
-  position: sticky;
-}
-.mdStyle{
-  width: 100%;
-  line-height: 30px;
-  font-size: 0.8em;
-  word-wrap: break-word;
-  text-align: left;
-  padding-top: 3%;
-  padding-right: 3%;
-  padding-left: 3%;
-}
-.child{
-  padding-left: 5px;
+  padding-left: 40px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-top: 20px;
+  margin-left: 40px;
+  width: calc(75% - 40px);
+  float: left;
+  background-color: #ffffff;
+  border-radius: 4px;
+  overflow: auto;
 }
 .content{
-  width: 100%;
   box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  text-align: left;
+  line-height: 28px;
+}
+.heart {
+  background: url('~@/assets/web_heart_animation.png');
+  background-position: left;
+  background-repeat: no-repeat;
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50px);
   cursor: pointer;
+  background-size:2900%;
 }
-.content:first-child{
-  margin-top: 5px;
+.red-heart{
+  background-position: right;
 }
-.content ul{
+@keyframes heartBlast {
+  0% {
+    background-position: left;
+  }
+  100% {
+    background-position: right;
+  }
+}
+.heartAnimation {
+  display: inline-block;
+  -webkit-animation-name: heartBlast;
+  animation-name: heartBlast;
+  -webkit-animation-duration: .8s;
+  animation-duration: .8s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-timing-function: steps(28);
+  animation-timing-function: steps(28);
+  background-position: right;
+}
+.like-counts{
+  position: absolute;
+  left: calc(50% + 30px);
+  top: 50%;
+  color: black;
+  transform: translateY(-50%);
+}
+.share-ul{
   list-style: none;
+  padding: 10px;
+}
+.share-ul li {
   text-align: left;
-  box-sizing: border-box;
-  padding-left: 2em;
-  width: 100%;
-}
-.content ul li{
-  width: 90%;
-  height: 1.8em;
-  line-height: 1.8em;
-  font-size: 0.9em;
-  cursor: pointer;
-  transition: all 0.2s linear;
-}
-.content ul li:hover{
-  background-color: cornflowerblue;
-  color: aliceblue;
-}
-.cardStyle{
-  display: flex;
-  justify-content: flex-start;
-  flex-direction: column;
-  align-items: center;
-}
-.content-title{
-  width: 95%;
-  color: #253f50;
-  text-align: left;
-  padding-left: 10px;
-  line-height: 2.0em;
-  font-weight: 540;
-  transition: all 0.3s linear;
-}
-.content-title:hover{
-  background-color: cornflowerblue;
-  color: white;
-}
-.topTitle{
-  width: 100%;
-  height: 40px;
-  margin-top: 5px;
-  margin-left: 10px;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-}
-.topTitle span{
-  color: #253f50;
-  line-height: 40px;
-  margin-left: 4px;
-  font-size: 1.4em;
-}
-.blog-item >>> p{
   font-size: 14px;
-  text-indent: 20px;
+  height: 30px;
+  line-height: 30px;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all linear 0.2s;
+}
+.share-ul li:hover{
+  background-color: #f4f4f4;
 }
 </style>
