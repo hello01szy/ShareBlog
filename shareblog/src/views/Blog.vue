@@ -157,8 +157,9 @@ export default {
 }
 .blogheader{
   width: 100%;
-  height: 45%;
+  height: 60%;
   background-size: cover;
+  background-position: center;
   overflow: hidden;
   background-repeat: no-repeat;
   position: relative;
