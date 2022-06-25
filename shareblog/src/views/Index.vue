@@ -1,6 +1,6 @@
 <template>
   <div class="header" ref="header">
-    <el-backtop target='.header' :bottom='50'></el-backtop>
+    <el-backtop v-if="showBack" target='.header' :visibility-height='650' :bottom='50'></el-backtop>
     <Header :class="{headHide:isHeadHide, menumove: indexMenuMove}" @leaveWords = "showLoading"></Header>
     <div class="cover">
       <span id="title" :class="{ move: dissipate}">欢迎来到我的博客</span>
@@ -88,7 +88,8 @@ export default {
       // 控制head是否隐藏
       isHeadHide: false,
       // 是否给header添加到顶部的特效
-      indexMenuMove: false
+      indexMenuMove: false,
+      showBack: true
     }
   },
   computed: {
@@ -199,6 +200,10 @@ export default {
   activated () {
     this.dissipate = false
     this.isHeadHide = false
+    this.showBack = false
+    this.$nextTick(() => {
+      this.showBack = true
+    })
   },
   destoryed () {
     // window.removeEventListener('scroll', this.handleScroll)
