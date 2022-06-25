@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <keep-alive>
-      <router-view v-if="refresh"/>
+      <router-view v-if="refresh && $route.meta.keepAlive"/>
     </keep-alive>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
 <script>
@@ -16,6 +17,35 @@ export default {
     }
   },
   methods: {
+    outerScroll (event) {
+      const delta = event.target.scrollTop - this.top
+      this.top = event.target.scrollTop
+      this.eventTarget = event.target
+      const scrollData = {
+        delta: delta,
+        top: this.top
+      }
+      this.$store.commit('changeScrollTop', scrollData)
+      if (this.top >= 600) {
+        this.$store.commit('changeupToTop', true)
+        if (this.$store.state.upToTop) {
+          this.isShow = true
+        }
+      } else {
+        this.isShow = false
+      }
+    },
+    scollToTop () {
+      const timer = setInterval(() => {
+        const speed = Math.floor(-this.top / 5)
+        this.top = this.top + speed
+        if (this.top <= 0) {
+          this.top = 0
+          clearInterval(timer)
+        }
+        this.eventTarget.scrollTop = this.top
+      }, 30)
+    },
     // 页面刷新方法
     reload () {
       this.refresh = false
@@ -28,10 +58,31 @@ export default {
     return {
       reload: this.reload
     }
+  },
+  computed: {
+    getUpToTop () {
+      return this.$store.state.upToTop
+    }
+  },
+  mounted () {
+    window.addEventListener('scroll', this.outerScroll, true)
+  },
+  destroyed () {
+    window.removeEventListener('scroll', this.outerScroll)
+  },
+  watch: {
+    getUpToTop () {
+      this.top = 0
+      if (this.top >= 600) {
+        this.isShow = true
+      } else {
+        this.isShow = false
+      }
+    }
   }
 }
 </script>
-<style>
+<style scope>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

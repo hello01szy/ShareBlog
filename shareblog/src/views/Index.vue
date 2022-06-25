@@ -198,6 +198,7 @@ export default {
   },
   activated () {
     this.dissipate = false
+    this.isHeadHide = false
   },
   destoryed () {
     // window.removeEventListener('scroll', this.handleScroll)
@@ -379,7 +380,7 @@ export default {
   }
   .article-content{
     width: 92%;
-    height: 7.5em;
+    height: 4.5em;
     margin-left: 5%;
     font-size: 0.9em;
     text-align: left;
@@ -397,7 +398,7 @@ export default {
      */
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 5;
+    -webkit-line-clamp: 3;
   }
   .menumove{
     animation: show-then-hide 0.5s linear;

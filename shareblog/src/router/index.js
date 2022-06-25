@@ -10,17 +10,26 @@ const routes = [
   {
     path: '/',
     name: 'Index',
-    component: Index
+    component: Index,
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/about',
     name: 'about',
-    component: About
+    component: About,
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/lost',
     name: 'lost',
-    component: () => import('@/components/NotFound.vue')
+    component: () => import('@/components/NotFound.vue'),
+    meta: {
+      keepAlive: true
+    }
   },
   {
     path: '/editor',

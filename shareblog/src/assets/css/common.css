@@ -26,3 +26,24 @@ a{
   -moz-border-radius: 2em; */
   /* border-radius:2em; */
 }
+blockquote {
+  display: block;
+  font-size: 100%;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #f5f2f0;
+  border-left:8px solid #b4d5ff;
+}
+.content{
+  letter-spacing: 1px;
+}
+.content h1{
+  line-height: 40px;
+}
+.content h2{
+  line-height: 32px;
+}
+.content h3 h4 h5 h6 h7 h8 p{
+  line-height: 28px;
+}
