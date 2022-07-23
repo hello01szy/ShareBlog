@@ -7,7 +7,7 @@
       <div id="saying" :class="{ move: dissipate}">
         <span>流光容易把人抛，红了樱桃，绿了芭蕉</span>
       </div>
-      <div @click="dropdown" :class="{move: dissipate, down:!dissipate}">
+      <div :class="{move: dissipate, down:!dissipate}">
         <span>
           <svg t="1608967625889" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5425" width="48" height="48"><path d="M217.428767 62.593887L279.922664 0.09999l232.177326 232.177327L744.277317 0.09999l62.493897 62.493897-294.671224 294.671224L217.428767 62.593887z" fill="#ffffff" p-id="5426"></path><path d="M217.428767 729.328776l62.493897-62.493897 232.177326 232.177327 232.177327-232.177327 62.493897 62.493897-294.671224 294.671224-294.671223-294.671224z" fill="#ffffff" p-id="5427"></path><path d="M217.428767 395.961332l62.493897-62.493897 232.177326 232.177326 232.177327-232.177326 62.493897 62.493897-294.671224 294.671223L217.428767 395.961332z" fill="#ffffff" p-id="5428"></path></svg>
         </span>
@@ -129,25 +129,6 @@ export default {
         this.isHeadHide = true
         this.indexMenuMove = false
       }
-    },
-    // 点击向下图标，让滚动条向下滚动
-    dropdown () {
-      console.log('dropdown')
-      // 设置让滚动条缓慢移动对应位置
-      // eslint-disable-next-line
-      const height = this.$refs['header'].offsetHeight + 35
-      // eslint-disable-next-line
-      this.top = this.$refs['header'].scrollTop
-      const timer = setInterval(() => {
-        const speed = (height - this.top) / 3
-        if (this.top >= (height - 2)) {
-          this.top = height
-          clearInterval(timer)
-        }
-        this.top = this.top + speed
-        // eslint-disable-next-line
-        this.$refs['header'].scrollTop = this.top
-      }, 30)
     },
     doClick (id) {
       this.$router.push({
