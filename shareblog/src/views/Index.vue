@@ -1,13 +1,13 @@
 <template>
   <div class="header" ref="header">
+    <Menu></Menu>
     <el-backtop v-if="showBack" target='.header' :visibility-height='650' :bottom='50'></el-backtop>
-    <Header :class="{headHide:isHeadHide, menumove: indexMenuMove}" @leaveWords = "showLoading"></Header>
     <div class="cover">
-      <span id="title" :class="{ move: dissipate}">欢迎来到我的博客</span>
-      <div id="saying" :class="{ move: dissipate}">
+      <span id="title">欢迎来到helloworld的博客世界</span>
+      <div id="saying">
         <span>流光容易把人抛，红了樱桃，绿了芭蕉</span>
       </div>
-      <div :class="{move: dissipate, down:!dissipate}">
+      <div class="down">
         <span>
           <svg t="1608967625889" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5425" width="48" height="48"><path d="M217.428767 62.593887L279.922664 0.09999l232.177326 232.177327L744.277317 0.09999l62.493897 62.493897-294.671224 294.671224L217.428767 62.593887z" fill="#ffffff" p-id="5426"></path><path d="M217.428767 729.328776l62.493897-62.493897 232.177326 232.177327 232.177327-232.177327 62.493897 62.493897-294.671224 294.671224-294.671223-294.671224z" fill="#ffffff" p-id="5427"></path><path d="M217.428767 395.961332l62.493897-62.493897 232.177326 232.177326 232.177327-232.177326 62.493897 62.493897-294.671224 294.671223L217.428767 395.961332z" fill="#ffffff" p-id="5428"></path></svg>
         </span>
@@ -55,21 +55,17 @@
 </template>
 
 <script>
-import Header from '@/views/components/Header'
 import Card from '@/views/components/Card'
 import Introduction from '@/views/components/Introduction'
 import Page from '@/components/Page'
 import Loading from '@/components/Loading.vue'
 import { getAllArticles } from '@/http/request.js'
 import { parseStrToDate } from '../../util.js'
+import Menu from './components/Header.vue'
 export default {
   name: 'Index',
   data () {
     return {
-      dissipate: false,
-      // menuDissipate: false,
-      scrollTop: 0,
-      sticky: true,
       // 定义博客列表
       blogs: [],
       // 定义分类卡片的宽度
@@ -85,51 +81,23 @@ export default {
       contenetHeight: 0,
       // 用来控制加载界面是否隐藏
       loadingShow: true,
-      // 控制head是否隐藏
-      isHeadHide: false,
       // 是否给header添加到顶部的特效
       indexMenuMove: false,
       showBack: true
     }
   },
   computed: {
-    getVuexScrollTop () {
-      return this.$store.state.scrollTop
-    }
   },
   components: {
-    Header,
     Card,
     Introduction,
     Page,
-    Loading
+    Loading,
+    Menu
   },
   watch: {
-    getVuexScrollTop () {
-      this.handleScroll()
-    }
   },
   methods: {
-    // 滚动条滚动时产生的特效，让有些元素消失，如果滚动条回到起点在让其出现
-    handleScroll () {
-      const delta = this.$store.state.delta
-      this.scrollTop = this.$store.state.scrollTop
-      if (this.scrollTop !== 0) {
-        this.dissipate = true
-      } else {
-        this.dissipate = false
-      }
-      if (delta <= 0) {
-        this.isHeadHide = false
-        this.indexMenuMove = false
-        if (this.scrollTop === 0) {
-          this.indexMenuMove = true
-        }
-      } else if (delta > 0) {
-        this.isHeadHide = true
-        this.indexMenuMove = false
-      }
-    },
     doClick (id) {
       this.$router.push({
         path: '/blog',
@@ -144,17 +112,6 @@ export default {
       if (endIndex > this.blogs.length) {
         endIndex = this.blogs.length
       }
-      // this.showBlogs = this.blogs.slice(startIndex, endIndex)
-    },
-    showLoading () {
-      this.loadingShow = false
-      // 设置窗口不能滚动
-      const head = document.getElementsByClassName('header')[0]
-      head.style.overflowY = 'hidden'
-      setTimeout(() => {
-        this.loadingShow = true
-        head.style.overflowY = 'scroll'
-      }, 3000)
     },
     goToGitHub () {
     },
@@ -172,22 +129,18 @@ export default {
     }
   },
   created () {
-    this.getBlogs()
-    console.log('created:' + this.total)
+    // this.getBlogs()
+    // console.log('created:' + this.total)
   },
   mounted () {
-    // window.addEventListener('scroll', this.handleScroll, true)
   },
   activated () {
-    this.dissipate = false
-    this.isHeadHide = false
     this.showBack = false
     this.$nextTick(() => {
       this.showBack = true
     })
   },
   destoryed () {
-    // window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
@@ -215,14 +168,10 @@ export default {
     position: relative;
   }
   #title{
-    width: 8em;
     font-family:'Times New Roman', Times, serif;
     color:#ffffff;
     font-size: 2em;
     white-space: nowrap;
-    border-right: 2px solid transparent;
-    overflow: hidden;
-    transition: all 0.5s linear;
   }
   #saying{
     margin-top: 10px;
@@ -243,6 +192,7 @@ export default {
     /* margin-left: 400px; */
     overflow: hidden;
     left: 50%;
+    padding-right: 5px;
     white-space: nowrap;
     animation: typing 3.5s steps(17, end), blink-caret .75s step-end infinite;
   }

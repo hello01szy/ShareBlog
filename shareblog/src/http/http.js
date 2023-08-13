@@ -7,7 +7,7 @@ var instance = axios.create()
 instance.defaults.timeout = 5000
 // post请求的请求头内需要设置的内容
 instance.defaults.headers.post['Content-Type'] = 'application/json'
-instance.defaults.baseURL = 'http://localhost:8080/article/'
+instance.defaults.baseURL = 'http://localhost:8081/article/'
 // 请求拦截器:post传参序列化
 instance.interceptors.request.use((param) => {
   nprogress.start()
@@ -27,13 +27,13 @@ instance.interceptors.response.use(res => {
   }
 },
 error => {
+  nprogress.done()
   if (error.response.status) {
     switch (error.response.status) {
       case 401:
         console.log('401')
         break
       case 403:
-        nprogress.done()
         console.log('403')
         break
       case 404:

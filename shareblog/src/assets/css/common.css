@@ -3,8 +3,14 @@
   margin: 0px;
   box-sizing: border-box;
 }
+:root{
+  --light-gray: rgba(255, 255, 255, 0.7);
+  --white: rgba(255, 255, 255, 1);
+}
 a{
   text-decoration: none;
+  cursor: pointer;
+
 }
 /* 以下内容是对滚动条的美化 */
 ::-webkit-scrollbar {
