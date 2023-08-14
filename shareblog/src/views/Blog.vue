@@ -40,7 +40,7 @@
 <script>
 import { getArticleById } from '@/http/request.js'
 import Header from '@/views/components/Header'
-import { parseStrToDate } from '../../util'
+import { parseStrToDate } from '@/util'
 export default {
   name: 'Blog',
   components: {

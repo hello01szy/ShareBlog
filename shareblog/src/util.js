@@ -16,3 +16,14 @@ export const parseDateToStr = () => {
   const day = d.getDate()
   return year + month + day
 }
+export const throttle = function (fn, delay) {
+  let timer = null
+  return function () {
+    clearTimeout(timer)
+    const context = this
+    const args = arguments
+    timer = setTimeout(() => {
+      fn.apply(context, args)
+    }, delay)
+  }
+}

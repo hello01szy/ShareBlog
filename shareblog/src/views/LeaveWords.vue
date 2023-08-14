@@ -56,7 +56,7 @@
 <script>
 import Header from '@/views/components/Header'
 import Loading from '@/components/Loading'
-import { parseStrToDate, parseDateToStr } from '../../util'
+import { parseStrToDate, parseDateToStr } from '@/util'
 export default {
   name: 'words',
   components: {

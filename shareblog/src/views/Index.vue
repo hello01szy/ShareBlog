@@ -1,7 +1,6 @@
 <template>
   <div class="header" ref="header">
-    <Menu></Menu>
-    <el-backtop v-if="showBack" target='.header' :visibility-height='650' :bottom='50'></el-backtop>
+    <Menu :up='scrollUp' :down='scrollDown'></Menu>
     <div class="cover">
       <span id="title">欢迎来到helloworld的博客世界</span>
       <div id="saying">
@@ -60,7 +59,7 @@ import Introduction from '@/views/components/Introduction'
 import Page from '@/components/Page'
 import Loading from '@/components/Loading.vue'
 import { getAllArticles } from '@/http/request.js'
-import { parseStrToDate } from '../../util.js'
+import { parseStrToDate, throttle } from '@/util.js'
 import Menu from './components/Header.vue'
 export default {
   name: 'Index',
@@ -77,13 +76,11 @@ export default {
       total: -1,
       // 定义要展示的blog内容，是从blogs中获取的
       showBlogs: [],
-      // 元素content的高度
-      contenetHeight: 0,
       // 用来控制加载界面是否隐藏
       loadingShow: true,
-      // 是否给header添加到顶部的特效
-      indexMenuMove: false,
-      showBack: true
+      scrollUp: false,
+      scrollDown: false,
+      scrollTop: 0
     }
   },
   computed: {
@@ -94,8 +91,6 @@ export default {
     Page,
     Loading,
     Menu
-  },
-  watch: {
   },
   methods: {
     doClick (id) {
@@ -126,6 +121,21 @@ export default {
         this.$message.error('请求所有文章出错')
         console.log(err)
       })
+    },
+    scrollEvent (e) {
+      if (e.target.scrollTop > this.scrollTop) {
+        this.scrollDown = true
+        this.scrollUp = false
+      } else if (e.target.scrollTop < this.scrollTop) {
+        if (e.target.scrollTop !== 0) {
+          this.scrollUp = true
+          this.scrollDown = false
+        } else {
+          this.scrollUp = false
+          this.scrollDown = false
+        }
+      }
+      this.scrollTop = e.target.scrollTop
     }
   },
   created () {
@@ -133,14 +143,10 @@ export default {
     // console.log('created:' + this.total)
   },
   mounted () {
-  },
-  activated () {
-    this.showBack = false
-    this.$nextTick(() => {
-      this.showBack = true
-    })
+    this.$refs.header.addEventListener('scroll', throttle(this.scrollEvent, 20))
   },
   destoryed () {
+    this.$refs.header.removeEventListener('scroll', throttle(this.scrollEvent, 20))
   }
 }
 </script>
@@ -148,8 +154,6 @@ export default {
   .header {
     width: 100vw;
     height: 100vh;
-    min-width: 1072px;
-    min-height: 560px;
     background-image: url('~@/assets/header.png');
     background-repeat: no-repeat;
     background-position: center;

@@ -6,6 +6,7 @@
 :root{
   --light-gray: rgba(255, 255, 255, 0.7);
   --white: rgba(255, 255, 255, 1);
+  --transparent-dark: rgba(18,18,18,.8);
 }
 a{
   text-decoration: none;
