@@ -19,8 +19,12 @@
         <span class="home">后端</span>
       </div>
       <div class="menu-item">
+        <i class="fa fa-paper-plane-o"></i>
+        <span class="home">其他技术文章</span>
+      </div>
+      <div class="menu-item">
         <i class="fa fa-coffee"></i>
-        <span class="home">生活</span>
+        <span class="home">随笔</span>
       </div>
     </div>
   </div>
@@ -53,12 +57,12 @@ export default {
 
 <style scoped>
   .menu{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     height: 60px;
     display: flex;
-    width: 100%;
+    width: calc(100% - 9px);
     align-items: center;
     padding: 0 30px 0 30px;
     font-size: 1.3em;
@@ -72,6 +76,8 @@ export default {
     background-color: var(--transparent-dark);
   }
   .scroll-menu-down{
+    position: fixed;
+    width: calc(100% - 9px);
     top: -60px;
   }
   .logo{

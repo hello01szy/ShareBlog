@@ -1,6 +1,6 @@
 <template>
   <div class="outer">
-    <Card :childWidth=childWidth :childHeight=childHeight>
+    <!--<Card :childWidth=childWidth :childHeight=childHeight>
       <template v-slot:blog>
         <div class="introduction">
           <div class="avator"></div>
@@ -23,7 +23,7 @@
             </table>
           </div>
           <div class="follow-btn">
-            <!-- <button><i class="fa fa-github" aria-hidden="true"></i> <span>Follow</span></button> -->
+            <button><i class="fa fa-github" aria-hidden="true"></i> <span>Follow</span></button>
             <BgExpandBtn :icon="childIcon" :iconColor="iconColor" :afBg="afBg" @click.native="gitFlow"></BgExpandBtn>
           </div>
           <div class="recommand">
@@ -116,12 +116,12 @@
           </div>
         </div>
       </template>
-    </Card>
+    </Card>-->
   </div>
 </template>
 <script>
-import Card from '@/views/components/Card'
-import BgExpandBtn from '@/components/BgExpandBtn'
+// import Card from '@/views/components/Card'
+// import BgExpandBtn from '@/components/BgExpandBtn'
 export default {
   name: 'Introduction',
   data () {
@@ -141,8 +141,8 @@ export default {
     }
   },
   components: {
-    Card,
-    BgExpandBtn
+    // Card,
+    // BgExpandBtn
   },
   methods: {
     dropdown (key, event) {

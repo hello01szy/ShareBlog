@@ -4,7 +4,8 @@
     <div class="cover">
       <span id="title">欢迎来到helloworld的博客世界</span>
       <div id="saying">
-        <span>流光容易把人抛，红了樱桃，绿了芭蕉</span>
+        <span>{{ words }}</span>
+        <span class="cursor">|</span>
       </div>
       <div class="down">
         <span>
@@ -14,35 +15,8 @@
     </div>
     <div id="content">
         <div class="blogs">
-          <Card v-for="(item, key) in showBlogs" :key="key">
-            <template v-slot:pic>
-              <div class="pic-frame">
-                <img :src="item.cover" alt="haha" class="scale-pic">
-              </div>
-            </template>
-            <template v-slot:blog>
-              <div class="article">
-                <div class="article-title">
-                  <h2 @click="doClick(item.id)">{{ item.title }}</h2>
-                </div>
-                <div class="article-attributes">
-                  <span>
-                    <i class="fa fa-calendar" aria-hidden="true">
-                      发布时间：{{ item.publishDate }}
-                    </i> |
-                    <i class="fa fa-eye" aria-hidden="true">
-                      浏览次数：100
-                    </i> |
-                    <i class="fa fa-tags" aria-hidden="true">
-                      <a href="#"> 情感专栏</a>
-                    </i>
-                  </span>
-                </div>
-                <div class="article-content" v-html="item.summary">
-                </div>
-              </div>
-            </template>
-          </Card>
+          <blog-item v-for="(item, key) in showBlogs" :key="key" :blog='item' :flag='key % 2 !== 0'>
+          </blog-item>
           <Page :total="total" @dopage="paging"></Page>
         </div>
         <div class="card-container">
@@ -54,7 +28,7 @@
 </template>
 
 <script>
-import Card from '@/views/components/Card'
+import BlogItem from '@/views/components/BlogIntroduce'
 import Introduction from '@/views/components/Introduction'
 import Page from '@/components/Page'
 import Loading from '@/components/Loading.vue'
@@ -65,6 +39,8 @@ export default {
   name: 'Index',
   data () {
     return {
+      meto: '流光容易把人抛，红了樱桃，绿了芭蕉',
+      words: '',
       // 定义博客列表
       blogs: [],
       // 定义分类卡片的宽度
@@ -75,7 +51,35 @@ export default {
       // 定义总共有多少个元素
       total: -1,
       // 定义要展示的blog内容，是从blogs中获取的
-      showBlogs: [],
+      showBlogs: [{
+        picSrc: 'https://jsd.012700.xyz/gh/jerryc127/CDN/img/when-set-the-top-img-to-false.png',
+        title: '当设置学习强国时',
+        publishDate: '2023-08-17',
+        exposeTimes: '230',
+        type: '情感专栏',
+        summary: '以下文章只是教程 如果部署之后，并没有出现 aplayer , 请确认是否跟足步骤操作或者更换音乐源，多试试。 如果遇到使用問題，请仔细查看插件文档，或者到插件那裏反饋。 前言如果你想使用 aplayer，很多人都會推薦安裝 hexo-tag-aplayer 這款插件。這款插件通過 Hexo 獨有的標籤外掛，我們可以很方便的寫入一些參數，插件就會幫我們生成對應的 html。如果你只是使用一些簡單的功能，其實無需使用到這個插件，只需以 html 格式書寫就行，不用插件去轉換。 例如： 如果使用插件，在 markdown 中要這樣寫 1{% meting "000PeZCQ1i4XVs" "tencent" "artist" "theme:#3F51B5" "mutex:true" "preload:auto" %} 其會被插件渲染為 1<div id="aplayer-uxAIfEUs" class="apl ...'
+      }, {
+        picSrc: 'https://jsd.012700.xyz/gh/jerryc127/CDN/img/when-set-the-top-img-to-false.png',
+        title: '当设置学习强国时',
+        publishDate: '2023-08-17',
+        exposeTimes: '230',
+        type: '情感专栏',
+        summary: '以下文章只是教程 如果部署之后，并没有出现 aplayer , 请确认是否跟足步骤操作或者更换音乐源，多试试。 如果遇到使用問題，请仔细查看插件文档，或者到插件那裏反饋。 前言如果你想使用 aplayer，很多人都會推薦安裝 hexo-tag-aplayer 這款插件。這款插件通過 Hexo 獨有的標籤外掛，我們可以很方便的寫入一些參數，插件就會幫我們生成對應的 html。如果你只是使用一些簡單的功能，其實無需使用到這個插件，只需以 html 格式書寫就行，不用插件去轉換。 例如： 如果使用插件，在 markdown 中要這樣寫 1{% meting "000PeZCQ1i4XVs" "tencent" "artist" "theme:#3F51B5" "mutex:true" "preload:auto" %} 其會被插件渲染為 1<div id="aplayer-uxAIfEUs" class="apl ...'
+      }, {
+        picSrc: 'https://jsd.012700.xyz/gh/jerryc127/CDN/img/when-set-the-top-img-to-false.png',
+        title: '当设置学习强国时',
+        publishDate: '2023-08-17',
+        exposeTimes: '230',
+        type: '情感专栏',
+        summary: '以下文章只是教程 如果部署之后，并没有出现 aplayer , 请确认是否跟足步骤操作或者更换音乐源，多试试。 如果遇到使用問題，请仔细查看插件文档，或者到插件那裏反饋。 前言如果你想使用 aplayer，很多人都會推薦安裝 hexo-tag-aplayer 這款插件。這款插件通過 Hexo 獨有的標籤外掛，我們可以很方便的寫入一些參數，插件就會幫我們生成對應的 html。如果你只是使用一些簡單的功能，其實無需使用到這個插件，只需以 html 格式書寫就行，不用插件去轉換。 例如： 如果使用插件，在 markdown 中要這樣寫 1{% meting "000PeZCQ1i4XVs" "tencent" "artist" "theme:#3F51B5" "mutex:true" "preload:auto" %} 其會被插件渲染為 1<div id="aplayer-uxAIfEUs" class="apl ...'
+      }, {
+        picSrc: 'https://jsd.012700.xyz/gh/jerryc127/CDN/img/when-set-the-top-img-to-false.png',
+        title: '当设置学习强国时',
+        publishDate: '2023-08-17',
+        exposeTimes: '230',
+        type: '情感专栏',
+        summary: '以下文章只是教程 如果部署之后，并没有出现 aplayer , 请确认是否跟足步骤操作或者更换音乐源，多试试。 如果遇到使用問題，请仔细查看插件文档，或者到插件那裏反饋。 前言如果你想使用 aplayer，很多人都會推薦安裝 hexo-tag-aplayer 這款插件。這款插件通過 Hexo 獨有的標籤外掛，我們可以很方便的寫入一些參數，插件就會幫我們生成對應的 html。如果你只是使用一些簡單的功能，其實無需使用到這個插件，只需以 html 格式書寫就行，不用插件去轉換。 例如： 如果使用插件，在 markdown 中要這樣寫 1{% meting "000PeZCQ1i4XVs" "tencent" "artist" "theme:#3F51B5" "mutex:true" "preload:auto" %} 其會被插件渲染為 1<div id="aplayer-uxAIfEUs" class="apl ...'
+      }],
       // 用来控制加载界面是否隐藏
       loadingShow: true,
       scrollUp: false,
@@ -86,7 +90,7 @@ export default {
   computed: {
   },
   components: {
-    Card,
+    BlogItem,
     Introduction,
     Page,
     Loading,
@@ -100,6 +104,16 @@ export default {
           articleId: id
         }
       })
+    },
+    /**
+     * @description 展示格言
+     */
+    showMeto () {
+      for (let i = 0; i < this.meto.length; i++) {
+        setTimeout(() => {
+          this.words = this.words + this.meto[i]
+        }, 150 * i)
+      }
     },
     paging (currentPage, pageSize) {
       const startIndex = (currentPage - 1) * pageSize
@@ -139,10 +153,9 @@ export default {
     }
   },
   created () {
-    // this.getBlogs()
-    // console.log('created:' + this.total)
   },
   mounted () {
+    this.showMeto()
     this.$refs.header.addEventListener('scroll', throttle(this.scrollEvent, 20))
   },
   destoryed () {
@@ -179,26 +192,21 @@ export default {
   }
   #saying{
     margin-top: 10px;
-    width: 100%;
     font-size: 1.2em;
-    color: #ffffff;
+    color: var(--white);
     font-family: 'Times New Roman', Times, serif;
-    display: flex;
-    flex-direction: row;
-    border-right: 2px solid transparent;
-    justify-content: flex-start;
-    transition: all 0.5s linear;
     position: relative;
   }
   #saying span{
     position: relative;
-    width: 17em;
-    /* margin-left: 400px; */
     overflow: hidden;
     left: 50%;
     padding-right: 5px;
     white-space: nowrap;
-    animation: typing 3.5s steps(17, end), blink-caret .75s step-end infinite;
+  }
+  #saying .cursor{
+    font-size: 1.2em;
+    animation: blink 0.8s linear infinite;
   }
   .move{
     opacity: 0;
@@ -210,13 +218,16 @@ export default {
     animation: up-then-down 1s linear infinite;
     cursor: pointer;
   }
-  @keyframes typing {
-    from { width: 0em; }
-    to { width: 17em; }
-  }
-  @keyframes blink-caret {
-    from, to { box-shadow: 2px 0 0 0 transparent; }
-    50% { box-shadow: 2px 0 0 0; }
+  @keyframes blink {
+    0%{
+      opacity: 1;
+    }
+    50%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
   }
   @keyframes up-then-down {
     0%{
@@ -240,73 +251,23 @@ export default {
     background-size: 10%;
     position: relative;
     overflow: hidden;
-    min-height: 950px;
+    display: flex;
+    gap: 20px;
+    padding-left: 15%;
+    padding-right: 15%;
   }
   .blogs{
-    width: 57%;
-    position: relative;
-    top: 15px;
-    left: 10%;
     padding-top: 10px;
     padding-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-  }
-  .scale-pic{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 4px 0px 0px 4px;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    transition: all 1s ease;
-  }
-  .scale-pic:hover{
-    transform: scale(1.5);
-  }
-  .pic-frame{
-    width: 36%;
-    overflow: hidden;
-    height: 180px;
-  }
-  .article{
-    width: 64%;
-    height: 180px;
-    background: #ffffff;
-    border-radius: 0px 4px 4px 0px;
+    flex: 2;
   }
   .card-container{
-    width: 20%;
-    margin-left: 3%;
-    position: absolute;
-    top: 15px;
-    right: 10%;
     padding-top: 10px;
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
+    flex: 1;
     align-items: center;
-  }
-  .article-title{
-    width: 95%;
-    margin-left: 5%;
-    margin-top: 10px;
-    display: flex;
-    justify-content: left;
-  }
-  .article-attributes{
-    width: 95%;
-    margin-left: 5%;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    font-size: 0.4em;
-    justify-content: left;
-  }
-  .article-attributes a{
-      color: rgb(37, 63, 80);
   }
   .blogs a:hover{
     text-decoration: underline;
@@ -317,28 +278,6 @@ export default {
   }
   .headHide{
     opacity: 0;
-  }
-  .article-content{
-    width: 92%;
-    height: 4.5em;
-    margin-left: 5%;
-    font-size: 0.9em;
-    text-align: left;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    line-height: 1.5em;
-    padding-bottom: 10px;
-    letter-spacing: 2px;
-    user-select: none;
-    /* 省略号展示多余内容
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      text-overflow: ellipsis;
-      overflow: hidden;
-     */
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
   }
   .menumove{
     animation: show-then-hide 0.5s linear;
